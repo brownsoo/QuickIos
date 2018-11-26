@@ -1,3 +1,6 @@
+
+# NOW Developing. Don't trust!!
+
 # QuickIosComponent
 
 [![CI Status](https://img.shields.io/travis/brownsoo/QuickIosComponent.svg?style=flat)](https://travis-ci.org/brownsoo/QuickIosComponent)
