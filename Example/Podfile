@@ -1,0 +1,6 @@
+use_frameworks!
+target 'QuickIosComponent_Tests' do
+  pod 'QuickIosComponent', :path => '../'
+  
+  
+end
