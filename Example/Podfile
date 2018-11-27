@@ -1,7 +1,10 @@
 platform :ios, '11.0'
 use_frameworks!
-target 'QuickIosComponent_Tests' do
+target 'QuickIosExample-iOS' do
   pod 'QuickIosComponent', :path => '../'
   
+  target 'QuickIosExample-iOSTests' do
+      inherit! :search_paths
+  end
   
 end

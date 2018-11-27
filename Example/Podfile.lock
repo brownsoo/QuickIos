@@ -5,7 +5,7 @@ PODS:
     - RxCocoa (~> 4.0)
     - RxSwift (~> 4.0)
   - ReSwift (4.0.1)
-  - ReSwiftConsumer (0.3.0):
+  - ReSwiftConsumer (0.3.1):
     - ReSwift
   - RxAtomic (4.4.0)
   - RxCocoa (4.4.0):
@@ -29,13 +29,13 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  QuickIosComponent: 4f6a7db96dc756fb1847750eebe289ce31aa1ee9
+  QuickIosComponent: db3bbf29b493d6483f4f5cdd23b1b8998b9d0a8e
   ReSwift: f4012c613e13da7398827fe5aebdb938eaed40a3
-  ReSwiftConsumer: 86acac9e256938ca065f6069f893c247f950f88e
+  ReSwiftConsumer: e4800ee6fa9096c3b17eaa4cb12f78fe0726c8c5
   RxAtomic: eacf60db868c96bfd63320e28619fe29c179656f
   RxCocoa: df63ebf7b9a70d6b4eeea407ed5dd4efc8979749
   RxSwift: 5976ecd04fc2fefd648827c23de5e11157faa973
 
-PODFILE CHECKSUM: 16cfb5bdc74086cc1c2c9e2753f6c1d7b74246c3
+PODFILE CHECKSUM: 05a0ba4a4ab8560bd29ba499101d365c4f7963f1
 
 COCOAPODS: 1.5.3
