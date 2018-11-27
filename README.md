@@ -7,7 +7,7 @@
 [![Version](https://img.shields.io/cocoapods/v/QuickIosComponent.svg?style=flat)](https://cocoapods.org/pods/QuickIosComponent)
 [![License](https://img.shields.io/cocoapods/l/QuickIosComponent.svg?style=flat)](https://cocoapods.org/pods/QuickIosComponent)
 [![Platform](https://img.shields.io/cocoapods/p/QuickIosComponent.svg?style=flat)](https://cocoapods.org/pods/QuickIosComponent)
-[![codebeat badge](https://codebeat.co/badges/9b15f5e0-786c-4ca3-b2d4-828371079336)](https://codebeat.co/projects/github-com-brownsoo-quickios-master)
+[![codebeat badge](https://codebeat.co/badges/406b2cf1-55c8-428a-83d4-0bf7aede142e)](https://codebeat.co/projects/github-com-brownsoo-quickioscomponent-master)
 
 ## Example
 
