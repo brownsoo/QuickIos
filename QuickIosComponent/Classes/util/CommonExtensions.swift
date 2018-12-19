@@ -14,6 +14,40 @@ public extension CGPoint {
     }
 }
 
+public extension Int {
+    func twoDigitString() -> String {
+        if self < 10 {
+            return "0\(self)"
+        } else {
+            return "\(self)"
+        }
+    }
+    func string() -> String {
+        return "\(self)"
+    }
+}
+
+public extension Float {
+    func twoDigitString() -> String {
+        let int = Int(self)
+        return int.twoDigitString()
+    }
+}
+
+public extension Double {
+    /// 두자리 문자로
+    func twoDigitString() -> String {
+        let int = Int(self)
+        return int.twoDigitString()
+    }
+}
+
+public extension NSMutableData {
+    func appendString(_ string: String) {
+        append(string.data(using: String.Encoding.utf8, allowLossyConversion: false)!)
+    }
+}
+
 public extension Date {
 
     /// Local weekday 1~7

@@ -1,9 +1,9 @@
 //
 //  BaseStateViewController.swift
-//  StudioUser
+//  QuickIosComponent
 //
 //  Created by brownsoo han on 2017. 10. 18..
-//  Copyright © 2017년 TLX. All rights reserved.
+//  Copyright © 2018년 Hansoolabs. All rights reserved.
 //
 
 import Foundation

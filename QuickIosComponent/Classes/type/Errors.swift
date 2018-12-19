@@ -5,115 +5,51 @@
 
 import Foundation
 
-public protocol StudioError: Error, Equatable {
-    var type: StudioErrorType { get }
+public protocol QuickError: Error, Equatable {
+    var type: QuickErrorType { get }
     var code: Int { get }
     var cause: Error? { get }
     var message: String? { get }
     var utc: TimeInterval { get }
 }
 
-public enum StudioErrorType: Int {
+public enum QuickErrorType: Int {
     case server = 1
     case net = 3
     case runtime = 5
     case undefined = 9
 }
 
-public enum StudioErrorCode: Int {
+public enum QuickErrorCode: Int {
     // server error related with status code
     case noData = 1000, invalidClient, invalidCredential, notFound,
     unauthorized, failedRefreshToken, unprocessableEntity,
-    tooManyRequests, conflict, badRequest, serverError
-    // server defined
-    case serverDefinedError = 2000
+    tooManyRequests, conflict, badRequest, serverError, notModified,
+    forbidden, notAcceptable, gone, enhanceYourCalm, internalServerError,
+    badGateway, serviceUnavailable, gatewayTimeout
     // net
-    case connectionTimeout = 3000, connectionFailed,
+    case connectionTimeout = 2000, connectionFailed,
     noNetwork, cancelled, instant
     // runtime
-    case cannotParsingResponse = 5000, invalidDecoder, ignore
+    case cannotParsingResponse = 5000, invalidDecoder, ignore, accessTokenRequire
     // undefined
     case undefined = 9999
     
     public init(code: Int) {
-        if code > 9999 {
-            self = StudioErrorCode.serverDefinedError
-        } else {
-            self = StudioErrorCode(rawValue: code) ?? .undefined
-        }
-    }
-}
-
-// MARK: Helper
-
-public class StudioErrorUtil {
-
-    public static func create(_ error: Error?) -> StudioErrorBase {
-        switch error {
-        case let error as StudioErrorBase:
-            return error
-        case let error as URLError:
-            return NetError(error)
-        default:
-            return UndefinedError(error)
-        }
-    }
-    /// 일시적인 오류
-    public static func instantError() -> NetError {
-        return NetError(.instant, message: "다시 시도 해보기 바랍니다.")
-    }
-    /// 무시해도 되는 오류
-    public static func ignoreError() -> RuntimeError {
-        return RuntimeError(.ignore, error: nil)
-    }
-
-    /// httpStatus 코드로 오류 파싱
-    public static func httpResponseError(_ httpResponse: HTTPURLResponse, data: Data?) -> NetError {
-        return NetError(httpResponse, data: data)
-    }
-
-    /// RefreshToken Expired
-    public static func failedRefreshToken() -> NetError {
-        return NetError(.failedRefreshToken, message: "토큰 만료")
-    }
-
-    /// 데이터가 없음
-    public static func noData(_ url: String?) -> NoDataError {
-        return NoDataError(url)
-    }
-
-    public static func undefined(_ cause: Error?) -> UndefinedError {
-        return UndefinedError(cause)
-    }
-
-    public static func withErrorPayload(_ payload: ErrorPayload) -> StumeError {
-        return StumeError(payload)
-    }
-
-    /// 타입 변환 오류
-    public static func parsingError(_ urlString: String?, error: Error?, with data: Data?) -> RuntimeError {
-
-        guard let data = data, let message = String.init(data: data, encoding: .utf8) else {
-            return RuntimeError(StudioErrorCode.cannotParsingResponse,
-                error: error,
-                message: "cannot parse response")
-        }
-        return RuntimeError(StudioErrorCode.cannotParsingResponse,
-            error: error,
-            message: message)
+        self = QuickErrorCode(rawValue: code) ?? .undefined
     }
 }
 
 
 // MARK: Implementation
 
-open class StudioErrorBase: StudioError {
-    public var type: StudioErrorType {
-        return StudioErrorType.undefined
+open class QuickSimpleError: QuickError {
+    public var type: QuickErrorType {
+        return QuickErrorType.undefined
     }
 
     public var code: Int {
-        return StudioErrorCode.undefined.rawValue
+        return QuickErrorCode.undefined.rawValue
     }
 
     public var cause: Error? {
@@ -128,7 +64,7 @@ open class StudioErrorBase: StudioError {
         return 0
     }
 
-    public static func ==(lhs: StudioErrorBase, rhs: StudioErrorBase) -> Bool {
+    public static func ==(lhs: QuickSimpleError, rhs: QuickSimpleError) -> Bool {
         return lhs.utc == rhs.utc
             && lhs.code == rhs.code
     }
@@ -138,14 +74,14 @@ open class StudioErrorBase: StudioError {
             NSString.CompareOptions.literal, range: nil) ?? ""
         return """
         type: \(type)
-        code: \(StudioErrorCode(code: code)) [\(code)]
+        code: \(QuickErrorCode(code: code)) [\(code)]
         cause: \(String(describing: cause))
         message: \(msg)
         """
     }
 }
 
-public class UndefinedError: StudioErrorBase {
+public class UndefinedError: QuickSimpleError {
     override public var cause: Error? {
         return _cause
     }
@@ -165,12 +101,12 @@ public class UndefinedError: StudioErrorBase {
     }
 }
 
-public class NoDataError: StudioErrorBase {
-    override public var type: StudioErrorType {
-        return StudioErrorType.server
+public class NoDataError: QuickSimpleError {
+    override public var type: QuickErrorType {
+        return QuickErrorType.server
     }
     override public var code: Int {
-        return StudioErrorCode.noData.rawValue
+        return QuickErrorCode.noData.rawValue
     }
     override public var message: String? {
         return "No data with No Error : \(url ?? "")"
@@ -188,12 +124,12 @@ public class NoDataError: StudioErrorBase {
     }
 }
 
-open class StumeError: StudioErrorBase {
-    override public var type: StudioErrorType {
-        return StudioErrorType.server
+open class DefinedError: QuickSimpleError {
+    override public var type: QuickErrorType {
+        return QuickErrorType.server
     }
     override public var code: Int {
-        return payload.error
+        return payload.code
     }
     override public var cause: Error? {
         return nil
@@ -208,15 +144,15 @@ open class StumeError: StudioErrorBase {
     private var payload: ErrorPayload
     private let _utc: TimeInterval
 
-    init(_ payload: ErrorPayload) {
-        self.payload = payload
+    init(_ payloadBuilder: ()->ErrorPayload) {
+        self.payload = payloadBuilder()
         _utc = Date().timeIntervalSince1970
     }
 }
 
-public class RuntimeError: StudioErrorBase {
-    override public var type: StudioErrorType {
-        return StudioErrorType.runtime
+public class RuntimeError: QuickSimpleError {
+    override public var type: QuickErrorType {
+        return QuickErrorType.runtime
     }
     override public var code: Int {
         return _code.rawValue
@@ -232,25 +168,25 @@ public class RuntimeError: StudioErrorBase {
     }
 
     private var _cause: Error?
-    private let _code: StudioErrorCode
+    private let _code: QuickErrorCode
     private var _message: String?
     private let _utc: Double
 
-    init(_ code: StudioErrorCode, error: Error?, message: String?) {
+    init(_ code: QuickErrorCode, error: Error?, message: String?) {
         _code = code
         _cause = error
         _message = message
         _utc = Date().timeIntervalSince1970
     }
 
-    convenience init(_ code: StudioErrorCode, error: Error?) {
+    convenience init(_ code: QuickErrorCode, error: Error?) {
         self.init(code, error: error, message: error?.localizedDescription)
     }
 }
 
-public class NetError: StudioErrorBase {
+public class NetError: QuickSimpleError {
 
-    override public var type: StudioErrorType {
+    override public var type: QuickErrorType {
         return _type
     }
     override public var code: Int {
@@ -273,12 +209,12 @@ public class NetError: StudioErrorBase {
     public private(set) var statusCode: Int = -1
 
     private let _cause: URLError?
-    private let _code: StudioErrorCode
+    private let _code: QuickErrorCode
     private let _message: String?
     private let _utc: TimeInterval
-    private var _type: StudioErrorType
+    private var _type: QuickErrorType
 
-    init(_ cause: URLError?, code: StudioErrorCode, message: String, utc: TimeInterval) {
+    init(_ cause: URLError?, code: QuickErrorCode, message: String, utc: TimeInterval) {
         self._type = .net
         self._cause = cause
         self._code = code
@@ -286,7 +222,7 @@ public class NetError: StudioErrorBase {
         self._utc = utc
     }
 
-    convenience init(_ code: StudioErrorCode, message: String) {
+    convenience init(_ code: QuickErrorCode, message: String) {
         self.init(nil, code: code, message: message, utc: Date().timeIntervalSince1970)
     }
 
@@ -299,22 +235,40 @@ public class NetError: StudioErrorBase {
     }
 
     convenience init(_ response: HTTPURLResponse, data: Data?) {
-        var code: StudioErrorCode
+        var code: QuickErrorCode
         switch response.statusCode {
+        case 304:
+            code = .notModified
         case 400:
-            code = StudioErrorCode.badRequest
+            code = .badRequest
         case 401:
-            code = StudioErrorCode.unauthorized
+            code = .unauthorized
+        case 403:
+            code = .forbidden
         case 404:
-            code = StudioErrorCode.notFound
+            code = .notFound
+        case 406:
+            code = .notAcceptable
         case 409:
-            code = StudioErrorCode.conflict
+            code = .conflict
+        case 410:
+            code = .gone
+        case 420:
+            code = .enhanceYourCalm
         case 422:
-            code = StudioErrorCode.unprocessableEntity // validation 실패 또는 유효하지 않은 이메일
+            code = .unprocessableEntity
         case 429:
-            code = StudioErrorCode.tooManyRequests
+            code = .tooManyRequests
+        case 500:
+            code = .internalServerError
+        case 502:
+            code = .badGateway
+        case 503:
+            code = .serviceUnavailable
+        case 504:
+            code = .gatewayTimeout
         default:
-            code = StudioErrorCode.serverError
+            code = .serverError
         }
         
         var msg: String
@@ -330,24 +284,24 @@ public class NetError: StudioErrorBase {
         self.statusCode = response.statusCode
     }
 
-    static private func convertCode(_ urlError: URLError) -> StudioErrorCode {
+    static private func convertCode(_ urlError: URLError) -> QuickErrorCode {
         switch urlError.code {
         case URLError.Code.cannotConnectToHost,
              URLError.Code.secureConnectionFailed,
              URLError.Code.badURL:
-            return StudioErrorCode.connectionFailed
+            return QuickErrorCode.connectionFailed
 
         case URLError.Code.timedOut:
-            return StudioErrorCode.connectionTimeout
+            return QuickErrorCode.connectionTimeout
 
         case URLError.Code.notConnectedToInternet:
-            return StudioErrorCode.noNetwork
+            return QuickErrorCode.noNetwork
 
         case URLError.cancelled:
-            return StudioErrorCode.cancelled
+            return QuickErrorCode.cancelled
 
         default:
-            return StudioErrorCode.undefined
+            return QuickErrorCode.undefined
         }
     }
 }

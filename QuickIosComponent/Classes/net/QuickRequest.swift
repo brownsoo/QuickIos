@@ -1,6 +1,5 @@
 //
 //  QuickRequest.swift
-//  Pods-QuickIosComponent_Tests
 //
 //  Created by brownsoo han on 26/11/2018.
 //
@@ -43,7 +42,7 @@ open class BaseRequest<T> : Request {
     public private(set) var urlString: String
     public private(set) var token: String? = nil
     public private(set) var isTokenRequired: Bool = false
-    public private(set) var headers: [String : String]? = nil
+    public lazy var headers = [String : String]()
     
     open var cancelled = false
     open var called = false
@@ -58,35 +57,32 @@ open class BaseRequest<T> : Request {
     }
     
     @discardableResult
-    public func setTokenRequired() -> BaseRequest<T> {
+    open func setTokenRequired() -> BaseRequest<T> {
         self.isTokenRequired = true
         return self
     }
     
     @discardableResult
-    public func addHeader(_ key: String, _ value: String) -> BaseRequest<T> {
-        if headers == nil {
-            headers = [String:String ]()
-        }
-        headers?[key] = value
+    open func addHeader(_ key: String, _ value: String) -> BaseRequest<T> {
+        headers[key] = value
         return self
     }
     
     /// 요청을 실행하기 전에 수행할 것을 등록한다.
     @discardableResult
-    public func addBeforeAction(_ action: @escaping RequestBeforeAction) -> BaseRequest<T> {
+    open func addBeforeAction(_ action: @escaping RequestBeforeAction) -> BaseRequest<T> {
         beforeActions.append(action)
         return self
     }
     /// 요청이 성공했을 때 실행할 것을 등록한다.
     @discardableResult
-    public func addSuccessAction(_ action: @escaping RequestSuccessAction) -> BaseRequest<T> {
+    open func addSuccessAction(_ action: @escaping RequestSuccessAction) -> BaseRequest<T> {
         successActions.append(action)
         return self
     }
     /// 요청이 실패했을 때 실행할 것을 등록한다.
     @discardableResult
-    public func addFailAction(_ action: @escaping RequestFailAction) -> BaseRequest<T> {
+    open func addFailAction(_ action: @escaping RequestFailAction) -> BaseRequest<T> {
         failActions.append(action)
         return self
     }

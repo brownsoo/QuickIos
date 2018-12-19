@@ -1,9 +1,9 @@
 //
 //  UIKitExtension.swift
-//  StudioUser
+//  QuickIosComponent
 //
 //  Created by brownsoo han on 2017. 11. 8..
-//  Copyright © 2017년 TLX. All rights reserved.
+//  Copyright © 2018년 Hansoolabs. All rights reserved.
 //
 
 import UIKit
@@ -274,6 +274,14 @@ extension UIViewController {
             } else {
                 self.dismiss(animated: true, completion: nil)
             }
+        }
+    }
+    
+    func pushOrPresent(_ vc: UIViewController, animated: Bool) {
+        if let nc = navigationController {
+            nc.pushViewController(vc, animated: animated)
+        } else {
+            present(vc, animated: animated, completion: nil)
         }
     }
 }

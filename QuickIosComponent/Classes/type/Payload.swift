@@ -8,6 +8,9 @@ import Foundation
 public protocol Payload {}
 
 public protocol ErrorPayload: Payload, Codable {
-    var error: Int { get }
+    var code: Int { get }
     var message: String?  { get }
 }
+
+// 배열도 리턴 타입에 포함시키기 위함
+extension Array: Payload {}
