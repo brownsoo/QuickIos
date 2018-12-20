@@ -5,7 +5,7 @@
 
 import UIKit
 
-public final class BlueOutlineButton: UIButton, AlsoBlock {
+public final class BlueOutlineButton: UIButton, Also {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         onInit()
@@ -34,7 +34,7 @@ public final class BlueOutlineButton: UIButton, AlsoBlock {
         let shadow = CAShapeLayer()
         shadow.path = UIBezierPath(roundedRect: bounds, cornerRadius: 6).cgPath
         shadow.fillColor = UIColor.white.cgColor
-        shadow.shadowColor = UIColor(red: 74, green: 144, blue: 226).cgColor
+        shadow.shadowColor = UIColor(74, 144, 226).cgColor
         shadow.shadowPath = UIBezierPath(
             roundedRect: CGRect(x: 9, y: 18, width: bounds.width - 18, height: bounds.height - 24),
             cornerRadius: 6)
@@ -45,7 +45,7 @@ public final class BlueOutlineButton: UIButton, AlsoBlock {
         return shadow
     }()
     
-    private var blue: UIColor = UIColor(red: 74, green: 144, blue: 226)
+    private var blue: UIColor = UIColor(74, 144, 226)
 
     private func onInit() {
         setBackgroundImage(UIImage().solid(UIColor.white), for: .normal)

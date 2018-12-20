@@ -3,15 +3,16 @@
 // Copyright (c) 2018 StudioMate. All rights reserved.
 //
 
-public protocol AlsoBlock {
+public protocol Also {
     @discardableResult
     func also(_ block: (Self)->Void) -> Self
 }
 
-public extension AlsoBlock {
+public extension Also {
     @discardableResult
     public func also(_ block: (Self) -> Void) -> Self {
         block(self)
         return self
     }
 }
+

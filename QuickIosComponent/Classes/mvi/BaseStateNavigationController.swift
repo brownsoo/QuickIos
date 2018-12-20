@@ -12,51 +12,32 @@ import RxSwift
 import ReSwift
 import ReSwiftConsumer
 
-class BaseStateNavigationController<V, S, I: BaseInteractor<V, S>>: StateNavigationController<S>, ForegroundNotable {
+open class BaseStateNavigationController<V, S, I: BaseInteractor<V, S>>: StateNavigationController<S>, ForegroundNotable {
 
     private(set) public var isFirstLayout = true
-    var bag = DisposeBag()
+    public var rxBag = DisposeBag()
 
-    override init(rootViewController: UIViewController) {
-        super.init(rootViewController: rootViewController)
-        onInit()
-    }
-    
-    override init(navigationBarClass: AnyClass?, toolbarClass: AnyClass?) {
-        super.init(navigationBarClass: navigationBarClass, toolbarClass: toolbarClass)
-        onInit()
-    }
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        onInit()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        onInit()
-    }
-    
-    func createInteractor() -> I? { return nil }
-    
-    func onInit() {
+    open func createInteractor() -> I? { return nil }
+
+    open override func viewDidLoad() {
+        super.viewDidLoad()
         pageInteractor = createInteractor()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         (pageInteractor as? ViewAttach)?.attachView(view: self as! V)
         bindEvents()
         bindConsumers()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         (pageInteractor as? ViewAttach)?.detachView()
         unbindEvents()
     }
 
-    override func viewDidLayoutSubviews() {
+    override open func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if isFirstLayout {
             isFirstLayout = false
@@ -65,38 +46,38 @@ class BaseStateNavigationController<V, S, I: BaseInteractor<V, S>>: StateNavigat
     }
 
     /// once called at first layout time
-    func firstDidLayout() {
+    open func firstDidLayout() {
     }
 
-    func showLoading() {
+    open func showLoading() {
         guard let child = children.last else {
             return
         }
         (child as? LoadingIndicatable)?.showLoading(child.view)
     }
     
-    func hideLoading() {
+    open func hideLoading() {
         if let child = children.last as? LoadingIndicatable {
             child.hideLoading()
         }
     }
     
-    func didForeground() {
+    open func didForeground() {
     }
     
-    func didBackground() {
+    open func didBackground() {
     }
     /// bind UI events
     /// called in viewWillAppear
-    func bindEvents() {}
+    open func bindEvents() {}
     /// unbind UI events
     /// called in viewWillDisappear
-    func unbindEvents() {
-        bag = DisposeBag()
+    open func unbindEvents() {
+        rxBag = DisposeBag()
     }
     /// bind Consumers
     /// called in viewWillAppear
-    func bindConsumers() {}
+    open func bindConsumers() {}
 }
 
 extension BaseStateNavigationController: AlertPop {

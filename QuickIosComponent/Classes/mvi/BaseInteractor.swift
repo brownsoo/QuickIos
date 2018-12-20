@@ -9,15 +9,13 @@
 import Foundation
 import ReSwift
 import ReSwiftConsumer
-import RxSwift
 
 open class BaseInteractor<V, PS: StateType & Equatable>: RePageInteractor<PS>,
     ForegroundNotable,
     ViewAttach,
     Footable {
     
-    private var view: V?
-    let bag = DisposeBag()
+    private(set) public var view: V?
     
     private let pageLogging: Middleware<PS> = { dispatch, getState in
         return { next in
@@ -34,35 +32,26 @@ open class BaseInteractor<V, PS: StateType & Equatable>: RePageInteractor<PS>,
         return [pageLogging]
     }
     
-    func attachView(view: Any) {
+    open func attachView(view: Any) {
         self.view = view as? V
         foot("attachView(\(view)")
     }
     
-    func detachView() {
+    open func detachView() {
         view = nil
         foot("detachView()")
     }
-    func didForeground() {
+    open func didForeground() {
         foot("didForeground")
         if let v = view as? ForegroundNotable {
             v.didForeground()
         }
     }
     
-    func didBackground() {
+    open func didBackground() {
         foot("didBackground")
         if let v = view as? ForegroundNotable {
             v.didBackground()
         }
     }
-    
-    private func foregroundChanged(prev: Bool?, curr: Bool) {
-        if curr {
-            didForeground()
-        } else {
-            didBackground()
-        }
-    }
-    
 }

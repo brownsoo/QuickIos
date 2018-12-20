@@ -24,3 +24,20 @@ open class JustView: UIView {
     }
 }
 
+open class JustButton: UIButton {
+    public convenience init() {
+        self.init(type: .custom)
+        onInit()
+    }
+
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        onInit()
+    }
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        onInit()
+    }
+    open func onInit() {
+    }
+}

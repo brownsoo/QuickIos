@@ -10,10 +10,10 @@ import Foundation
 
 
 public extension String {
-    func striked(color: UIColor = QuickColor.charcoalGrey) -> NSAttributedString {
+    func striked(color: UIColor = UIColor.red.brightness(brightness: 0.5)) -> NSAttributedString {
         return NSAttributedString(string: self,
                                   attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue,
-                                               NSAttributedString.Key.strikethroughColor: QuickColor.charcoalGrey])
+                                               NSAttributedString.Key.strikethroughColor: UIColor.lightGray])
     }
     func mutable(fontSize: CGFloat? = nil) -> NSMutableAttributedString {
         if let size = fontSize {

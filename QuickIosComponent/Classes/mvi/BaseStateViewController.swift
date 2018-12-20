@@ -18,32 +18,19 @@ open class BaseStateViewController<V, S, I: BaseInteractor<V, S>>
     ForegroundNotable {
 
     public let loadingView = LoadingView()
-    internal var bag = DisposeBag()
+    public var rxBag = DisposeBag()
     private(set) var indent = [String: Any]()
     private(set) var isFirstLayout = true
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        onInit()
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        onInit()
-    }
     
     func setIndent(key: String, value: Any) {
         indent[key] = value
     }
     
-    func createInteractor() -> I? { return nil }
-    
-    func onInit() {
-        pageInteractor = createInteractor()
-    }
-    
+    open func createInteractor() -> I? { return nil }
+
     override open func viewDidLoad() {
         super.viewDidLoad()
+        pageInteractor = createInteractor()
         view.backgroundColor = UIColor.white
     }
     
@@ -70,26 +57,26 @@ open class BaseStateViewController<V, S, I: BaseInteractor<V, S>>
         }
     }
     /// once called at first layout time
-    func firstDidLayout() {
+    open func firstDidLayout() {
         foot("firstDidLayout")
     }
     
-    func didBackground() {
+    open func didBackground() {
     }
     
-    func didForeground() {
+    open func didForeground() {
     }
     /// bind UI events
     /// called in viewWillAppear
-    func bindEvents() {}
+    open func bindEvents() {}
     /// unbind UI events
     /// called in viewWillDisappear
-    func unbindEvents() {
-        bag = DisposeBag()
+    open func unbindEvents() {
+        rxBag = DisposeBag()
     }
     /// bind Consumers
     /// called in viewWillAppear
-    func bindConsumers() {}
+    open func bindConsumers() {}
 }
 
 extension BaseStateViewController: AlertPop {

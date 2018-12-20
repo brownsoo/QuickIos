@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class StudioAlertController: UIAlertController {}
+public class QuickAlertController: UIAlertController {}
 
 public protocol AlertPop {
     /// Alert helper
@@ -30,14 +30,14 @@ public extension AlertPop {
                          alt: String? = nil,
                          altCallback: ((_ action: UIAlertAction) -> Void)? = nil) {
         
-        let alert = StudioAlertController(title: title, message: message, preferredStyle: .alert)
+        let alert = QuickAlertController(title: title, message: message, preferredStyle: .alert)
         if let alt = alt {
             let altAction = UIAlertAction(title: alt, style: .default, handler: altCallback)
             alert.addAction(altAction)
         }
         let okAction = UIAlertAction(title: positive ?? "닫기", style: .default, handler: positiveCallback)
         alert.addAction(okAction)
-        if let presented = parent.presentedViewController as? StudioAlertController {
+        if let presented = parent.presentedViewController as? QuickAlertController {
             presented.dismiss(animated: false, completion: {
                 parent.present(alert, animated: true)
             })

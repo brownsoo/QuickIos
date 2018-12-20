@@ -10,8 +10,8 @@ import UIKit
 import ReSwift
 import ReSwiftConsumer
 
-extension BaseStateSharedViewController {
-    static func newStateSharedInstance<State: StateType & Equatable>(
+public extension BaseStateSharedViewController {
+    public static func newStateSharedInstance<State: StateType & Equatable>(
         store: Store<State>,
         consumer: StateConsumer<State>) -> BaseStateSharedViewController<State> {
         let me = self.init() as! BaseStateSharedViewController<State>

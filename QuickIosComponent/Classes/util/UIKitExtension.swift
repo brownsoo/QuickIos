@@ -76,18 +76,18 @@ public extension UIColor {
         )
     }
     
-    public convenience init(red: Int, green: Int, blue: Int) {
+    public convenience init(_ red: Int, _ green: Int, _ blue: Int) {
         assert(red >= 0 && red <= 255, "Invalid red component")
         assert(green >= 0 && green <= 255, "Invalid red component")
         assert(blue >= 0 && blue <= 255, "Invalid red component")
+
         self.init(red: CGFloat(red)/255.0, green: CGFloat(green)/255.0, blue: CGFloat(blue)/255.0, alpha: 1.0)
     }
     
     public convenience init(rgb: Int) {
-        self.init(red: (rgb >> 16) & 0xff,
-                  green: (rgb >> 8) & 0xff,
-                  blue: rgb & 0xff)
+        self.init((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff)
     }
+    
     public func toImage(width: CGFloat, height: CGFloat) -> UIImage {
         let size = CGSize(width: width, height: height)
         let renderer = UIGraphicsImageRenderer(size: size)
@@ -249,7 +249,7 @@ public extension UIImage {
     }
 }
 
-extension UIViewController {
+public extension UIViewController {
     /// DispatchQueue.main.async 으로 전달
     public func runOnMain(_ block:@escaping ()->Void) {
         self.runOnMain(block, delay: 0)
@@ -267,7 +267,7 @@ extension UIViewController {
         }
     }
     /// 네비게이션을 pop 하거나 presented 뷰를 dismiss 한다.
-    open func dismissEasy() {
+    public func dismissEasy() {
         DispatchQueue.main.async {
             if let nc = self.navigationController {
                 nc.popViewController(animated: true)
@@ -277,7 +277,7 @@ extension UIViewController {
         }
     }
     
-    func pushOrPresent(_ vc: UIViewController, animated: Bool) {
+    public func pushOrPresent(_ vc: UIViewController, animated: Bool) {
         if let nc = navigationController {
             nc.pushViewController(vc, animated: animated)
         } else {

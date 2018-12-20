@@ -8,6 +8,6 @@
 
 import UIKit
 
-public final class FinalView: UIView, AlsoBlock {
+public final class FinalView: UIView, Also {
     
 }
