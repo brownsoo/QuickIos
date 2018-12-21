@@ -27,7 +27,6 @@ open class JustView: UIView {
 open class JustButton: UIButton {
     public convenience init() {
         self.init(type: .custom)
-        onInit()
     }
 
     public override init(frame: CGRect) {

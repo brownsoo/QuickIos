@@ -40,7 +40,7 @@ This Library is just Quick development for me.
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
+  # s.frameworks = 'UIKit'
   s.dependency 'ReSwift'
   s.dependency 'ReSwiftConsumer'
   s.dependency 'RxSwift', '~> 4.0'

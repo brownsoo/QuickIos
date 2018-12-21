@@ -25,17 +25,27 @@ public extension String {
 }
 
 public extension NSMutableAttributedString {
-    func bold(fontSize: CGFloat? = nil) -> NSMutableAttributedString {
-        let font = self.attribute(NSAttributedString.Key.font, at: 0, effectiveRange: nil) as? UIFont
-        let size = fontSize ?? font?.pointSize ?? 12
-        return NSMutableAttributedString(string: self.string,
-                                         attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: size, weight: .bold)])
+    func bold(fontSize: CGFloat? = nil, fontName: String? = nil) -> NSMutableAttributedString {
+        return applyFontStyle(fontSize: fontSize, fontName: fontName, weight: .bold)
     }
-    func regular(fontSize: CGFloat? = nil) -> NSMutableAttributedString {
-        let font = self.attribute(NSAttributedString.Key.font, at: 0, effectiveRange: nil) as? UIFont
-        let size = fontSize ?? font?.pointSize ?? 12
-        return NSMutableAttributedString(string: self.string,
-                                         attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: size, weight: .regular)])
+    func black(fontSize: CGFloat? = nil, fontName: String? = nil) -> NSMutableAttributedString {
+        return applyFontStyle(fontSize: fontSize, fontName: fontName, weight: .black)
+    }
+    func regular(fontSize: CGFloat? = nil, fontName: String? = nil) -> NSMutableAttributedString {
+        return applyFontStyle(fontSize: fontSize, fontName: fontName, weight: .regular)
+    }
+    func applyFontStyle(fontSize: CGFloat? = nil, fontName: String? = nil, weight: UIFont.Weight) -> NSMutableAttributedString {
+        let size = fontSize ?? 12
+        var font = fontName != nil ? UIFont(name: fontName!, size: size)
+            : self.attribute(NSAttributedString.Key.font, at: 0, effectiveRange: nil) as? UIFont
+        if font == nil {
+            font = UIFont.systemFont(ofSize: size, weight: weight)
+        }
+        return applyFont(font!)
+    }
+    func applyFont(_ font: UIFont) -> NSMutableAttributedString {
+        setAttributes([NSAttributedString.Key.font: font], range: NSRange(location: 0, length: self.length))
+        return self
     }
 }
 

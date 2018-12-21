@@ -64,7 +64,7 @@ public extension UIColor {
         scanner.scanLocation = 0
         var rgbValue: UInt64 = 0
         scanner.scanHexInt64(&rgbValue)
-        
+
         let r = (rgbValue & 0xff0000) >> 16
         let g = (rgbValue & 0xff00) >> 8
         let b = rgbValue & 0xff
@@ -75,17 +75,22 @@ public extension UIColor {
             blue: CGFloat(b) / 0xff, alpha: 1
         )
     }
-    
-    public convenience init(_ red: Int, _ green: Int, _ blue: Int) {
+
+    public convenience init(red: Int, green: Int, blue: Int) {
         assert(red >= 0 && red <= 255, "Invalid red component")
         assert(green >= 0 && green <= 255, "Invalid red component")
         assert(blue >= 0 && blue <= 255, "Invalid red component")
 
         self.init(red: CGFloat(red)/255.0, green: CGFloat(green)/255.0, blue: CGFloat(blue)/255.0, alpha: 1.0)
     }
+
+    public static func color255(_ rgb255: Int ...) -> UIColor {
+        assert(rgb255.count > 2, "Invalid component")
+        return UIColor(red: rgb255[0], green: rgb255[1], blue: rgb255[2])
+    }
     
     public convenience init(rgb: Int) {
-        self.init((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff)
+        self.init(red: (rgb >> 16) & 0xff, green:(rgb >> 8) & 0xff, blue: rgb & 0xff)
     }
     
     public func toImage(width: CGFloat, height: CGFloat) -> UIImage {
@@ -191,8 +196,8 @@ public extension UIImage {
     }
 
     @discardableResult
-    func solid(_ color: UIColor) -> UIImage {
-        let rect  = CGRect(x: 0, y: 0, width: 1, height: 1)
+    func solid(_ color: UIColor, width: CGFloat = 1, height: CGFloat = 1) -> UIImage {
+        let rect  = CGRect(x: 0, y: 0, width: width, height: height)
         let renderer = UIGraphicsImageRenderer(size: rect.size)
         let result = renderer.image { c in
             color.setFill()

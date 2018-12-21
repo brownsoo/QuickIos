@@ -29,7 +29,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  QuickIosComponent: db3bbf29b493d6483f4f5cdd23b1b8998b9d0a8e
+  QuickIosComponent: 9566df6e2ece4d060125e0fee9fd8aebbd6b5d95
   ReSwift: f4012c613e13da7398827fe5aebdb938eaed40a3
   ReSwiftConsumer: e4800ee6fa9096c3b17eaa4cb12f78fe0726c8c5
   RxAtomic: eacf60db868c96bfd63320e28619fe29c179656f
