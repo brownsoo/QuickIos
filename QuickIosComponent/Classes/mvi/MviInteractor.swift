@@ -1,5 +1,5 @@
 //
-//  BaseInteractor.swift
+//  MviInteractor.swift
 //  QuickIosComponent
 //
 //  Created by brownsoo han on 2017. 12. 23..
@@ -10,7 +10,7 @@ import Foundation
 import ReSwift
 import ReSwiftConsumer
 
-open class BaseInteractor<V, PS: StateType & Equatable>: RePageInteractor<PS>,
+open class MviInteractor<V, PS: StateType & Equatable>: RePageInteractor<PS>,
     ForegroundNotable,
     ViewAttach,
     Footable {

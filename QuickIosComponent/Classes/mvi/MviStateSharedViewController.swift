@@ -1,40 +1,55 @@
 //
-//  BaseStateNavigationController.swift
+//  MviSharedViewController.swift
 //  QuickIosComponent
 //
 //  Created by brownsoo han on 2017. 12. 23..
 //  Copyright © 2018년 Hansoolabs. All rights reserved.
 //
-
 import Foundation
-import UIKit
-import RxSwift
 import ReSwift
 import ReSwiftConsumer
+import RxSwift
+import UIKit
 
-open class BaseStateNavigationController<V, S, I: BaseInteractor<V, S>>: StateNavigationController<S>, ForegroundNotable {
+open class MviStateSharedViewController<SharedState: StateType & Equatable>
+    : StateSharedViewController<SharedState>,
+    LoadingIndicatable,
+    ForegroundNotable {
 
-    private(set) public var isFirstLayout = true
+    private(set) var isFirstLayout = true
+    lazy public var loadingView = LoadingView()
     public var rxBag = DisposeBag()
+    public var indent = [String: Any]()
 
-    open func createInteractor() -> I? { return nil }
+    @discardableResult
+    public func setIndent(_ key: String, _ value: Any) -> Self {
+        indent[key] = value
+        return self
+    }
 
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
-        pageInteractor = createInteractor()
+        foot("viewDidLoad()")
+        view.backgroundColor = UIColor.white
     }
     
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        (pageInteractor as? ViewAttach)?.attachView(view: self as! V)
+        foot("viewWillAppear(\(animated))")
         bindEvents()
         bindConsumers()
     }
     
     override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        (pageInteractor as? ViewAttach)?.detachView()
+        foot("viewWillDisappear(\(animated))")
         unbindEvents()
+        consumerBag?.removeAll()
+    }
+
+    override open func viewDidDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self)
+        super.viewDidDisappear(animated)
     }
 
     override open func viewDidLayoutSubviews() {
@@ -44,27 +59,12 @@ open class BaseStateNavigationController<V, S, I: BaseInteractor<V, S>>: StateNa
             firstDidLayout()
         }
     }
-
     /// once called at first layout time
     open func firstDidLayout() {
-    }
-
-    open func showLoading() {
-        guard let child = children.last else {
-            return
-        }
-        (child as? LoadingIndicatable)?.showLoading(child.view)
-    }
-    
-    open func hideLoading() {
-        if let child = children.last as? LoadingIndicatable {
-            child.hideLoading()
-        }
     }
     
     open func didForeground() {
     }
-    
     open func didBackground() {
     }
     /// bind UI events
@@ -80,7 +80,7 @@ open class BaseStateNavigationController<V, S, I: BaseInteractor<V, S>>: StateNa
     open func bindConsumers() {}
 }
 
-extension BaseStateNavigationController: AlertPop {
+extension MviStateSharedViewController: AlertPop {
     public func alertPop(_ title: String?,
                          message: String,
                          positive: String? = nil,
@@ -97,4 +97,3 @@ extension BaseStateNavigationController: AlertPop {
                  altCallback: altCallback)
     }
 }
-

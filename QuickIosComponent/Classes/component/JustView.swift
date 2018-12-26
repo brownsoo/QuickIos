@@ -1,13 +1,22 @@
 //
-//  BaseView.swift
-//  StudioBase
-//
-//  Created by hanhyonsoo on 2018. 6. 17..
-//  Copyright © 2018년 StudioMate. All rights reserved.
+//  JustView.swift
 //
 import UIKit
 
 open class JustView: UIView {
+
+    public let contentView = UIView()
+    private var contentConstraints = [String: NSLayoutConstraint]()
+    public var padding: UIEdgeInsets = UIEdgeInsets() {
+        didSet {
+            contentConstraints["leading"]?.constant = padding.left
+            contentConstraints["trailing"]?.constant = -padding.right
+            contentConstraints["top"]?.constant = padding.top
+            contentConstraints["bottom"]?.constant = -padding.bottom
+            setNeedsUpdateConstraints()
+        }
+    }
+
     public convenience init() {
         self.init(frame: CGRect())
     }
@@ -21,6 +30,21 @@ open class JustView: UIView {
         onInit()
     }
     open func onInit() {
+        addSubview(contentView)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        let leading = contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding.left)
+        leading.isActive = true
+        let trailing = contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding.right)
+        trailing.isActive = true
+        let top = contentView.topAnchor.constraint(equalTo: self.topAnchor, constant: padding.top)
+        top.isActive = true
+        let bottom = contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -padding.bottom)
+        bottom.isActive = true
+
+        contentConstraints["leading"] = leading
+        contentConstraints["trailing"] = trailing
+        contentConstraints["top"] = top
+        contentConstraints["bottom"] = bottom
     }
 }
 

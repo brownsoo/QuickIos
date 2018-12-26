@@ -5,7 +5,7 @@
 
 import UIKit
 
-public final class BlueOutlineButton: UIButton, Also {
+public final class OutlineButton: UIButton, Also {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         onInit()

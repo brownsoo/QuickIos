@@ -1,5 +1,5 @@
 //
-//  BaseStateViewController.swift
+//  MviStateViewController.swift
 //  QuickIosComponent
 //
 //  Created by brownsoo han on 2017. 10. 18..
@@ -12,12 +12,12 @@ import ReSwift
 import ReSwiftConsumer
 import RxSwift
 
-open class BaseStateViewController<V, S, I: BaseInteractor<V, S>>
+open class MviStateViewController<V, S, I: MviInteractor<V, S>>
     : StateViewController<S>,
     LoadingIndicatable,
     ForegroundNotable {
 
-    public let loadingView = LoadingView()
+    lazy public var loadingView = LoadingView()
     public var rxBag = DisposeBag()
     private(set) var indent = [String: Any]()
     private(set) var isFirstLayout = true
@@ -79,7 +79,7 @@ open class BaseStateViewController<V, S, I: BaseInteractor<V, S>>
     open func bindConsumers() {}
 }
 
-extension BaseStateViewController: AlertPop {
+extension MviStateViewController: AlertPop {
     public func alertPop(_ title: String?,
                          message: String,
                          positive: String? = nil,

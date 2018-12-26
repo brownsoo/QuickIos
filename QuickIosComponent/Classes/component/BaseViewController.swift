@@ -1,55 +1,40 @@
 //
-//  BaseStateSharedViewController.swift
+//  BaseViewController.swift
 //  QuickIosComponent
 //
-//  Created by brownsoo han on 2017. 12. 23..
-//  Copyright © 2018년 Hansoolabs. All rights reserved.
+//  Created by brownsoo han on 26/12/2018.
 //
+
 import Foundation
-import ReSwift
-import ReSwiftConsumer
 import RxSwift
-import UIKit
 
-open class BaseStateSharedViewController<SharedState: StateType & Equatable>
-    : StateSharedViewController<SharedState>,
-    LoadingIndicatable,
-    ForegroundNotable {
+open class BaseViewController: UIViewController, LoadingIndicatable, ForegroundNotable {
 
-    private(set) var isFirstLayout = true
     lazy public var loadingView = LoadingView()
     public var rxBag = DisposeBag()
-    public var indent = [String: Any]()
-
-    @discardableResult
-    public func setIndent(_ key: String, _ value: Any) -> Self {
-        indent[key] = value
-        return self
-    }
+    private(set) var indent = [String: Any]()
+    private(set) var isFirstLayout = true
 
     override open func viewDidLoad() {
         super.viewDidLoad()
         foot("viewDidLoad()")
         view.backgroundColor = UIColor.white
     }
-    
+
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        foot("viewWillAppear(\(animated))")
+        foot("viewWillAppear")
         bindEvents()
-        bindConsumers()
-    }
-    
-    override open func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        foot("viewWillDisappear(\(animated))")
-        unbindEvents()
-        consumerBag?.removeAll()
     }
 
-    override open func viewDidDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self)
-        super.viewDidDisappear(animated)
+    override open func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        foot("viewWillDisappear")
+        unbindEvents()
+    }
+
+    public func setIndent(_ key: String, _ value: Any) {
+        indent[key] = value
     }
 
     override open func viewDidLayoutSubviews() {
@@ -62,10 +47,9 @@ open class BaseStateSharedViewController<SharedState: StateType & Equatable>
     /// once called at first layout time
     open func firstDidLayout() {
     }
-    
-    open func didForeground() {
-    }
     open func didBackground() {
+    }
+    open func didForeground() {
     }
     /// bind UI events
     /// called in viewWillAppear
@@ -75,19 +59,17 @@ open class BaseStateSharedViewController<SharedState: StateType & Equatable>
     open func unbindEvents() {
         rxBag = DisposeBag()
     }
-    /// bind Consumers
-    /// called in viewWillAppear
-    open func bindConsumers() {}
 }
 
-extension BaseStateSharedViewController: AlertPop {
+
+extension BaseViewController: AlertPop {
     public func alertPop(_ title: String?,
                          message: String,
                          positive: String? = nil,
                          positiveCallback: ((_ action: UIAlertAction)->Void)? = nil,
                          alt: String? = nil,
                          altCallback: ((_ action: UIAlertAction) -> Void)? = nil) {
-        
+
         alertPop(self,
                  title: title,
                  message: message,

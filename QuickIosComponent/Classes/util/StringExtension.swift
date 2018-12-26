@@ -1,27 +1,37 @@
 //
 //  StringExtension.swift
-//  StudioBase
+//  QuickIosComponent
 //
 //  Created by brownsoo han on 2017. 12. 21..
-//  Copyright © 2017년 StudioMate. All rights reserved.
+//  Copyright © 2017년 Hansoo.labs. All rights reserved.
 //
 
 import Foundation
 
 
 public extension String {
-    func striked(color: UIColor = UIColor.red.brightness(brightness: 0.5)) -> NSAttributedString {
-        return NSAttributedString(string: self,
-                                  attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue,
-                                               NSAttributedString.Key.strikethroughColor: UIColor.lightGray])
-    }
     func mutable(fontSize: CGFloat? = nil) -> NSMutableAttributedString {
         if let size = fontSize {
             return NSMutableAttributedString(string: self,
-                                             attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: size)])
+                attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: size)])
         }
         return NSMutableAttributedString(string: self)
     }
+
+    func strike(style: NSUnderlineStyle = NSUnderlineStyle.single,
+                 color: UIColor = UIColor.red.brightness(brightness: 0.5)) -> NSAttributedString {
+        return NSAttributedString(string: self,
+                                  attributes: [NSAttributedString.Key.strikethroughStyle: style.rawValue,
+                                               NSAttributedString.Key.strikethroughColor: color])
+    }
+    func underline(style: NSUnderlineStyle = .single, color: UIColor? =  nil) -> NSMutableAttributedString {
+        var attrs: [NSAttributedString.Key: Any] = [NSAttributedString.Key.underlineStyle: style.rawValue]
+        if color != nil {
+            attrs[NSAttributedString.Key.underlineColor] = color!
+        }
+        return NSMutableAttributedString(string: self, attributes: attrs)
+    }
+
 }
 
 public extension NSMutableAttributedString {
@@ -46,6 +56,24 @@ public extension NSMutableAttributedString {
     func applyFont(_ font: UIFont) -> NSMutableAttributedString {
         setAttributes([NSAttributedString.Key.font: font], range: NSRange(location: 0, length: self.length))
         return self
+    }
+    func underline(style: NSUnderlineStyle = .single, color: UIColor? =  nil) -> NSMutableAttributedString {
+        var attrs: [NSAttributedString.Key: Any] = [NSAttributedString.Key.underlineStyle: style.rawValue]
+        if color != nil {
+            attrs[NSAttributedString.Key.underlineColor] = color!
+        }
+        setAttributes(attrs, range: NSRange(location: 0, length: self.length))
+        return self
+    }
+    func add(_ attrString: NSAttributedString) -> NSMutableAttributedString {
+        let m = self
+        m.append(attrString)
+        return m
+    }
+    func add(_ string: String) -> NSMutableAttributedString {
+        let m = self
+        m.append(NSAttributedString(string: string))
+        return m
     }
 }
 
