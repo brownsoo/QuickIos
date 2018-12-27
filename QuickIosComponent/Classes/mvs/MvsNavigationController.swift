@@ -18,6 +18,9 @@ open class MvsNavigationController<S, I: MvsInteractor<S>>: StateNavigationContr
     public var rxBag = DisposeBag()
 
     open func createInteractor() -> I? { return nil }
+    public var interactor: I? {
+        return pageInteractor as? I
+    }
 
     open override func viewDidLoad() {
         super.viewDidLoad()

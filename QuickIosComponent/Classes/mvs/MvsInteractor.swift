@@ -11,7 +11,6 @@ import ReSwift
 import ReSwiftConsumer
 
 open class MvsInteractor<PS: StateType & Equatable>: RePageInteractor<PS>,
-    ForegroundNotable,
     Footable {
     
     private let pageLogging: Middleware<PS> = { dispatch, getState in
@@ -27,13 +26,5 @@ open class MvsInteractor<PS: StateType & Equatable>: RePageInteractor<PS>,
     
     override open func getPageMiddleWares() -> [Middleware<PS>] {
         return [pageLogging]
-    }
-
-    open func didForeground() {
-        foot("didForeground")
-    }
-    
-    open func didBackground() {
-        foot("didBackground")
     }
 }

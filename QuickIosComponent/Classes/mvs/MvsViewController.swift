@@ -26,6 +26,9 @@ open class MvsViewController<S, I: MvsInteractor<S>>
     }
     
     open func createInteractor() -> I? { return nil }
+    public var interactor: I? {
+        return pageInteractor as? I
+    }
 
     override open func viewDidLoad() {
         super.viewDidLoad()
