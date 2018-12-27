@@ -9,6 +9,10 @@
 [![Platform](https://img.shields.io/cocoapods/p/QuickIosComponent.svg?style=flat)](https://cocoapods.org/pods/QuickIosComponent)
 [![codebeat badge](https://codebeat.co/badges/406b2cf1-55c8-428a-83d4-0bf7aede142e)](https://codebeat.co/projects/github-com-brownsoo-quickioscomponent-master)
 
+This Library is just Quick iOS development for me.
+
+This contains these. MVS (model-view-state) architecture components, UIKit extensions, Useful components and so on.
+
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
