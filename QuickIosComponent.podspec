@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'QuickIosComponent'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'iOS Library for Quick development.'
 
 # This description is used to generate tags and improve search results.
@@ -18,7 +18,8 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
 s.description      = <<-DESC
-This Library is just Quick development for me.
+This Library is just Quick iOS development for me.
+This contains these. MVS (model-view-state) architecture components, UIKit extensions, Useful components and so on.
                         DESC
 
   s.homepage         = 'https://github.com/brownsoo/QuickIosComponent'
@@ -40,7 +41,7 @@ This Library is just Quick development for me.
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit'
+  s.frameworks = 'UIKit'
   s.dependency 'ReSwift'
   s.dependency 'ReSwiftConsumer'
   s.dependency 'RxSwift', '~> 4.0'
