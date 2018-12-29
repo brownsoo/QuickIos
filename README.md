@@ -3,7 +3,7 @@
 
 # QuickIosComponent
 
-[![CI Status](https://img.shields.io/travis/brownsoo/QuickIosComponent.svg?style=flat)](https://travis-ci.org/brownsoo/QuickIosComponent)
+[![Build Status](https://travis-ci.com/brownsoo/QuickIosComponent.svg?branch=master)](https://travis-ci.com/brownsoo/QuickIosComponent)
 [![Version](https://img.shields.io/cocoapods/v/QuickIosComponent.svg?style=flat)](https://cocoapods.org/pods/QuickIosComponent)
 [![License](https://img.shields.io/cocoapods/l/QuickIosComponent.svg?style=flat)](https://cocoapods.org/pods/QuickIosComponent)
 [![Platform](https://img.shields.io/cocoapods/p/QuickIosComponent.svg?style=flat)](https://cocoapods.org/pods/QuickIosComponent)
