@@ -79,7 +79,7 @@ final public class GradientView: UIView {
 
     public override func layoutSublayers(of layer: CALayer) {
         super.layoutSublayers(of: layer)
-        gradient?.frame = self.bounds
+        gradient?.frame = self.frame
     }
 
 }
