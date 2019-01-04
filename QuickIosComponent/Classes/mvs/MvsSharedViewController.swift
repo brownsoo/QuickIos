@@ -11,7 +11,7 @@ import ReSwiftConsumer
 import RxSwift
 import UIKit
 
-open class MvsSharedViewController<SharedState: StateType & Equatable>
+open class MvsSharedViewController<SharedState: StateType & Equatable, I: MvsInteractor<SharedState>>
     : StateSharedViewController<SharedState>,
     LoadingIndicatable {
 
@@ -19,6 +19,7 @@ open class MvsSharedViewController<SharedState: StateType & Equatable>
     lazy public var loadingView = LoadingView()
     public var rxBag = DisposeBag()
     public var indent = [String: Any]()
+    public var interactor: I? = nil
 
     @discardableResult
     public func setIndent(_ key: String, _ value: Any) -> Self {
