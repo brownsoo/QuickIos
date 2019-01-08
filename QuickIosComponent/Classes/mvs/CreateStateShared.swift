@@ -15,7 +15,7 @@ public extension MvsSharedViewController {
         store: Store<State>,
         consumer: StateConsumer<State>,
         interactor: I? = nil) -> MvsSharedViewController<State, I> {
-        let me = self.init() as! MvsSharedViewController<State, I>
+        let me = MvsSharedViewController<State, I>()
         me.bind(store: store, consumer: consumer)
         me.interactor = interactor
         return me
