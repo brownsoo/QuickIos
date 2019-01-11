@@ -75,6 +75,13 @@ public extension NSMutableAttributedString {
         m.append(NSAttributedString(string: string))
         return m
     }
+
+    func color(_ color: UIColor) -> NSMutableAttributedString {
+        var attrs = self.attributes(at: 0, effectiveRange: nil)
+        attrs[NSAttributedString.Key.foregroundColor] = color
+        setAttributes(attrs, range: NSRange(location: 0, length: self.length))
+        return self
+    }
 }
 
 public extension String {
