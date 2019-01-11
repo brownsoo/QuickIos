@@ -1,9 +1,5 @@
 //
 //  WeeklyView.swift
-//  StudioBase
-//
-//  Created by hyonsoo han on 2018. 7. 19..
-//  Copyright © 2018년 StudioMate. All rights reserved.
 //
 
 import UIKit
