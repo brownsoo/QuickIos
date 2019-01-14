@@ -69,7 +69,7 @@ public extension YearMonthDay {
     /// init with yyyy-MM-dd
     public init?(yyyyMMdd: String) {
         let format = DateFormatter()
-        format.locale = TimeUtil.currentLocal
+        format.locale = TimeUtil.currentLocale
         format.dateFormat = "yyyy-MM-dd"
         let date = format.date(from: yyyyMMdd)
         if let date = date {

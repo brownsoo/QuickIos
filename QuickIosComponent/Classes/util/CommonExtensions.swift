@@ -80,7 +80,7 @@ public extension Date {
     
     func yyyyMMdd_HHmmss(_ join: String = "/") -> String {
         let form = DateFormatter()
-        form.locale = TimeUtil.currentLocal
+        form.locale = TimeUtil.currentLocale
         form.dateFormat = "yyyy\(join)MM\(join)dd HH:mm:ss"
         return form.string(from: self)
     }

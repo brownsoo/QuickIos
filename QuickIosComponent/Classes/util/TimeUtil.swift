@@ -14,7 +14,7 @@ final public class TimeUtil {
     public static var currentLocalIdentifier = identifierKorea
     public static var deviceTimeOffset: TimeInterval = 0
     public static var identifierKorea = "ko_KR"
-    public static var currentLocal = Locale(identifier: currentLocalIdentifier)
+    public static var currentLocale = Locale(identifier: currentLocalIdentifier)
     public static let oneDayTimeInterval = TimeInterval(24 * 60 * 60.0)
     
     public static func setTimeOffset(from: Date) {
@@ -119,7 +119,7 @@ final public class TimeUtil {
     public static func readableYearMonthDay(from: Date, style: DateFormatter.Style = .full) -> String {
         let formatter = DateFormatter()
         formatter.calendar = calendar
-        formatter.locale = currentLocal
+        formatter.locale = currentLocale
         formatter.dateStyle = style
         return formatter.string(from: from)
     }
