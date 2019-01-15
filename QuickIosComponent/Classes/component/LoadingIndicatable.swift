@@ -34,14 +34,10 @@ public extension LoadingIndicatable {
         DispatchQueue.main.async {
             self.loadingView.indicatorColor = indicatorColor ?? UIColor.white
             self.loadingView.boxColor = boxColor ?? UIColor.black.withAlphaComponent(0.5)
-            container.addSubview(self.loadingView)
-            container.bringSubviewToFront(self.loadingView)
-            self.loadingView.translatesAutoresizingMaskIntoConstraints = false
-            self.loadingView.widthAnchor.constraint(equalToConstant: 170).isActive = true
-            self.loadingView.heightAnchor.constraint(equalToConstant: 170).isActive = true
-            self.loadingView.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
-            self.loadingView.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
             self.loadingView.loading = true
+            self.loadingView.frame = container.bounds
+
+            container.addSubview(self.loadingView)
         }
     }
     

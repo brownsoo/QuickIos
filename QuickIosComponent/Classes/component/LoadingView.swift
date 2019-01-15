@@ -10,9 +10,9 @@ import UIKit
 
 public class LoadingView: UIView {
     
-    private var container: UIView!
-    private var indicator: UIActivityIndicatorView!
-    private var label: UILabel!
+    private lazy var box = UIView()
+    private lazy var indicator = UIActivityIndicatorView(style: .whiteLarge)
+    private lazy var label = UILabel()
     
     var loading: Bool {
         get {
@@ -50,30 +50,27 @@ public class LoadingView: UIView {
     
     var boxColor: UIColor = UIColor.black {
         didSet {
-            container.backgroundColor = boxColor
+            box.backgroundColor = boxColor
         }
     }
     
     private func onInit() {
-        container = UIView()
-        container.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        container.clipsToBounds = true
-        container.layer.cornerRadius = 10.0
-        self.addSubview(container)
-        container.translatesAutoresizingMaskIntoConstraints = false
-        container.widthAnchor.constraint(equalToConstant: 170).isActive = true
-        container.heightAnchor.constraint(equalToConstant: 170).isActive = true
-        container.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        container.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        
-        indicator = UIActivityIndicatorView(style: .whiteLarge)
+        self.addSubview(box)
+        box.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        box.clipsToBounds = true
+        box.layer.cornerRadius = 10.0
+        box.translatesAutoresizingMaskIntoConstraints = false
+        box.widthAnchor.constraint(equalToConstant: 170).isActive = true
+        box.heightAnchor.constraint(equalToConstant: 170).isActive = true
+        box.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        box.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+
         self.addSubview(indicator)
         indicator.hidesWhenStopped = true
         indicator.translatesAutoresizingMaskIntoConstraints = false
         indicator.centerXAnchor.constraint(equalTo: indicator.superview!.centerXAnchor).isActive = true
         indicator.centerYAnchor.constraint(equalTo: indicator.superview!.centerYAnchor, constant: -8).isActive = true
-        
-        label = UILabel()
+
         self.addSubview(label)
         label.backgroundColor = UIColor.clear
         label.textColor = UIColor.white
@@ -81,7 +78,7 @@ public class LoadingView: UIView {
         label.text = "Loading..."
         label.sizeToFit()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
+        label.centerXAnchor.constraint(equalTo: box.centerXAnchor).isActive = true
         label.topAnchor.constraint(equalTo: indicator.bottomAnchor, constant: 12).isActive = true
     }
 }
