@@ -9,6 +9,9 @@
 import Foundation
 
 public class Validation {
+
+    public static var minPasswordCount = 8
+    public static var maxPasswordCount = 32
     
     public static func checkField(tag: FieldTag, text: String?) -> (FieldTag, FieldError) {
         guard let text = text else {
@@ -34,17 +37,17 @@ public class Validation {
                 return (tag, .wrongFormat)
             }
         case .password: // 현재 비번에 대해서는 길이만 체크
-            if text.count < 4 {
+            if text.count < Validation.minPasswordCount {
                 return (tag, .tooShort)
             }
-            if text.count > 32 {
+            if text.count > Validation.maxPasswordCount {
                 return (tag, .tooLong)
             }
         case .passwordNew, .passwordNewConfirm:
-            if text.count < 8 {
+            if text.count < Validation.minPasswordCount {
                 return (tag, .tooShort)
             }
-            if text.count > 32 {
+            if text.count > Validation.maxPasswordCount {
                 return (tag, .tooLong)
             }
             if text.hasOnlyNumber || !text.hasNumber {
