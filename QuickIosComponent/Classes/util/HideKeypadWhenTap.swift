@@ -22,7 +22,7 @@ extension UIViewController {
     }
     
     @objc
-    public func handleTap(sender: UITapGestureRecognizer) {
+    open func handleTap(sender: UITapGestureRecognizer) {
         view.endEditing(true)
     }
     
