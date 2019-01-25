@@ -1,5 +1,5 @@
 //
-//  HideKeypadWhenTap.swift
+//  HideKeyboardWhenTap.swift
 //  StudioBase
 //
 //  Created by hyonsoo han on 2018. 7. 26..
@@ -8,21 +8,42 @@
 
 import UIKit
 
+public protocol HideKeyboardWhenTapDelegate {
+    /// Notify a view of UIViewController will be changes the frame
+    ///
+    /// - Parameters:
+    ///   - to: changed view frame
+    ///   - duration: keyboard animation time
+    ///   - option: keyboard animation option
+    ///   - visible: keyboard visible
+    func willChangeViewFrame(_ to: CGRect,
+                             duration: Double,
+                             option: UIView.AnimationOptions,
+                             visible: Bool)
+}
+
 extension UIViewController {
     
     @discardableResult
-    public func setupHideKeypadWhenTappedAround() -> UITapGestureRecognizer {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+    public func setupHideKeyboardWhenTapAround() -> UITapGestureRecognizer {
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(handleTap))
         view.addGestureRecognizer(tap)
         // responsive keyboard frame
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillChange),
-                                               name: UIWindow.keyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleKeyboardWillChange),
+            name: UIWindow.keyboardWillChangeFrameNotification, object: nil)
         return tap
         
     }
     
     @objc
     open func handleTap(sender: UITapGestureRecognizer) {
+        if let touchView = sender.view,
+            touchView is UITextInput {
+            return
+        }
         view.endEditing(true)
     }
     
@@ -34,19 +55,8 @@ extension UIViewController {
         let curve = n.animationCurve
         var frame: CGRect = self.view.frame
         frame.size = CGSize(width: frame.size.width, height: keyboardFrame.minY)
-        willChangeViewFrame(frame, duration: duration,
+        (self as? HideKeyboardWhenTapDelegate)?.willChangeViewFrame(frame, duration: duration,
                             option: UIView.AnimationOptions(rawValue: UInt(curve << 16)),
                             visible: frame.height < self.view.frame.height)
-    }
-    
-    /// Notify a view of UIViewController will be changes the frame
-    ///
-    /// - Parameters:
-    ///   - to: changed view frame
-    ///   - duration: keyboard animation time
-    ///   - option: keyboard animation option
-    ///   - visible: keyboard visible
-    @objc
-    open func willChangeViewFrame(_ to: CGRect, duration: Double, option: UIView.AnimationOptions, visible: Bool) {
     }
 }
