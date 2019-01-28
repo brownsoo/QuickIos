@@ -12,8 +12,8 @@ import ReSwiftConsumer
 
 public extension MvsSharedViewController {
     public static func newStateSharedInstance<State: StateType & Equatable, I: MvsInteractor<State>>(
-        store: Store<State>,
-        consumer: StateConsumer<State>,
+        store: Store<State>?,
+        consumer: StateConsumer<State>?,
         interactor: I? = nil) -> MvsSharedViewController<State, I> {
         let vc = self.init() as! MvsSharedViewController<State, I>
         vc.bind(store: store, consumer: consumer)
