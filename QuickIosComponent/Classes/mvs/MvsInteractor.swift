@@ -12,7 +12,7 @@ import ReSwiftConsumer
 
 open class MvsInteractor<PS: StateType & Equatable>: RePageInteractor<PS>,
     Footable {
-    
+
     private let pageLogging: Middleware<PS> = { dispatch, getState in
         return { next in
             return { action in
@@ -24,7 +24,7 @@ open class MvsInteractor<PS: StateType & Equatable>: RePageInteractor<PS>,
         }
     }
     
-    override open func getPageMiddleWares() -> [Middleware<PS>] {
+    open override func getPageMiddleWares() -> [Middleware<PS>] {
         return [pageLogging]
     }
 }

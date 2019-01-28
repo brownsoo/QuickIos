@@ -16,17 +16,17 @@ public protocol CreateStateSharedViaStoryboard: CreateViaStoryboard {
     associatedtype SharedState: StateType where SharedState: Equatable
     static func newStateSharedInstance(store: Store<SharedState>,
                                        consumer: StateConsumer<SharedState>) -> StateSharedViewController<SharedState>?
+    static func newStateSharedInstance(store: Store<SharedState>) -> StateSharedViewController<SharedState>?
 }
 
 public extension CreateStateSharedViaStoryboard {
-    
-    static func newStateSharedInstance(store: Store<SharedState>,
-                                       consumer: StateConsumer<SharedState>) -> StateSharedViewController<SharedState>? {
+
+    static func newStateSharedInstance(store: Store<SharedState>) -> StateSharedViewController<SharedState>? {
         let vc = newInstance()
         guard let shared = vc as? StateSharedViewController<SharedState> else {
             return nil
         }
-        shared.bind(store: store, consumer: consumer)
+        shared.bind(store: store)
         return shared
     }
 }
