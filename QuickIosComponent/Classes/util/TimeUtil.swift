@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// 서버시간을 맞추기 위한 유틸. 수강권과 관련된 시간계산시 사용한다.
+/// 특정 시간을 기준으로 시간 계산하기 위한 유틸.
 final public class TimeUtil {
     
     public static var currentLocalIdentifier = identifierKorea
@@ -32,7 +32,7 @@ final public class TimeUtil {
 
     public static var calendar: Calendar {
         var cal = Calendar(identifier: Calendar.Identifier.gregorian)
-        cal.locale = Locale(identifier: currentLocalIdentifier)
+        cal.locale = currentLocale
         return cal
     }
 
@@ -62,14 +62,15 @@ final public class TimeUtil {
     
     public static func string(_ date: Date, format: String) -> String {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: currentLocalIdentifier)
+        formatter.calendar = calendar
+        formatter.locale = currentLocale
         formatter.dateFormat = format
         return formatter.string(from: date)
     }
     
     public static func date(from: String, format: String) -> Date? {
         let form = DateFormatter()
-        form.locale = Locale(identifier: currentLocalIdentifier)
+        form.locale = currentLocale
         form.dateFormat = format
         return form.date(from: from)
     }
