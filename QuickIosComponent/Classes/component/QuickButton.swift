@@ -3,8 +3,8 @@ import UIKit
 open class QuickButton: JustButton {
 
     public var normalColor: UIColor = UIColor.white
-    public var highlightColor: UIColor = UIColor.yellow
-    public var disableColor: UIColor = UIColor.lightGray
+    public var highlightColor: UIColor = UIColor.black.brightness(brightness: 0.5)
+    public var disableColor: UIColor = UIColor.black.brightness(brightness: 0.9)
     public var borderColor: UIColor = UIColor.lightGray
     public var borderWidth: CGFloat = 1
     public var icon: UIImage? = nil {
@@ -113,16 +113,15 @@ open class QuickButton: JustButton {
         if isEnabled {
             if useGradient {
                 layer.insertSublayer(gradientLayer, at: 0)
-                layer.shadowColor = UIColor.black.cgColor
-                layer.shadowOpacity = 0.15
-                layer.shadowRadius = 8
-                layer.shadowOffset = CGSize(width: 0, height: 4)
-            } else if shadowing {
-                layer.shadowOpacity = 0
-                layer.insertSublayer(shadowLayer, at: 0)
+            } else {
+                gradientLayer.removeFromSuperlayer()
+            }
+            if shadowing {
+                layer.insertSublayer(shadowLayer, at: useGradient ? 1 : 0)
+            } else {
+                shadowLayer.removeFromSuperlayer()
             }
         } else {
-            layer.shadowOpacity = 0
             gradientLayer.removeFromSuperlayer()
             shadowLayer.removeFromSuperlayer()
         }

@@ -15,6 +15,8 @@ public class DeviceUtil {
         case normal
         case plus
         case x
+        case xr
+        case max
         case unknown
     }
     
@@ -37,7 +39,12 @@ public class DeviceUtil {
     public static func dividerRatio() -> CGFloat {
         return isSmall() ? 1.6 : 1
     }
-    
+
+    public static func screenRadius() -> CGFloat {
+        return getDeviceType() == .x ? 44 : 0
+    }
+
+    // https://developer.apple.com/design/human-interface-guidelines/ios/visual-design/adaptivity-and-layout/
     public static func getDeviceType() -> DeviceType {
         
         switch UIScreen.main.nativeBounds.height {
@@ -47,12 +54,16 @@ public class DeviceUtil {
         case 1334:
             //print("iPhone 6/6S/7/8")
             return .normal
+        case 1792:
+            return .xr
         case 2208:
             //print("iPhone 6+/6S+/7+/8+")
             return .plus
         case 2436:
-            //print("iPhone X")
+            //print("iPhone X, XS")
             return .x
+        case 2688: // iPhone XS Max
+            return .max
         default:
             print("unknown")
             return .unknown
