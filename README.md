@@ -7,7 +7,7 @@
 [![Version](https://img.shields.io/cocoapods/v/QuickIosComponent.svg?style=flat)](https://cocoapods.org/pods/QuickIosComponent)
 [![License](https://img.shields.io/cocoapods/l/QuickIosComponent.svg?style=flat)](https://cocoapods.org/pods/QuickIosComponent)
 [![Platform](https://img.shields.io/cocoapods/p/QuickIosComponent.svg?style=flat)](https://cocoapods.org/pods/QuickIosComponent)
-[![codebeat badge](https://codebeat.co/badges/406b2cf1-55c8-428a-83d4-0bf7aede142e)](https://codebeat.co/projects/github-com-brownsoo-quickioscomponent-master)
+[![codebeat badge](https://codebeat.co/badges/13b9c46a-79ad-433e-96d8-03ee33c14368)](https://codebeat.co/projects/github-com-brownsoo-quickioscomponent-master)
 
 This Library is just Quick iOS development for me.
 
