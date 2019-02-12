@@ -41,7 +41,17 @@ public class DeviceUtil {
     }
 
     public static func screenRadius() -> CGFloat {
-        return getDeviceType() == .x ? 44 : 0
+        return isRoundedScreen() ? 44 : 0
+    }
+
+    public static func isRoundedScreen() -> Bool {
+        let type = getDeviceType()
+        switch type {
+        case .x, .xr, .max:
+            return true
+        default:
+            return false
+        }
     }
 
     // https://developer.apple.com/design/human-interface-guidelines/ios/visual-design/adaptivity-and-layout/
