@@ -6,15 +6,19 @@
 
 import Foundation
 
-public protocol Request: Cancelable {
+public protocol QuickRequest: Cancelable {
+
     associatedtype ResultType
+    associatedtype QuickRequestSubclass
     
     var isCalled: Bool { get }
     var isCancelled: Bool { get }
     var isCompleted: Bool { get }
     var urlString: String { get }
     var token: String? { get }
-    
+
+    func addHeader(_ key: String, _ value: String) -> QuickRequestSubclass
+    func setTokenRequired() -> QuickRequestSubclass
     func call(resultHandler: @escaping (RequestResult<ResultType>) -> Void)
 }
 
@@ -28,7 +32,7 @@ public struct NullDataError: Error {
 
 /// Request 일부 구현한 Abstract 클래스
 /// 실제 요청을 수행하지 않음
-open class BaseRequest<T> : Request {
+open class QuickRequestBase<T> : QuickRequest {
     
     public typealias ResultType = T
     public typealias RequestBeforeAction = () -> Void
@@ -57,32 +61,32 @@ open class BaseRequest<T> : Request {
     }
     
     @discardableResult
-    open func setTokenRequired() -> BaseRequest<T> {
+    open func setTokenRequired() -> QuickRequestBase<T> {
         self.isTokenRequired = true
         return self
     }
     
     @discardableResult
-    open func addHeader(_ key: String, _ value: String) -> BaseRequest<T> {
+    open func addHeader(_ key: String, _ value: String) -> QuickRequestBase<T> {
         headers[key] = value
         return self
     }
     
     /// 요청을 실행하기 전에 수행할 것을 등록한다.
     @discardableResult
-    open func addBeforeAction(_ action: @escaping RequestBeforeAction) -> BaseRequest<T> {
+    open func addBeforeAction(_ action: @escaping RequestBeforeAction) -> QuickRequestBase<T> {
         beforeActions.append(action)
         return self
     }
     /// 요청이 성공했을 때 실행할 것을 등록한다.
     @discardableResult
-    open func addSuccessAction(_ action: @escaping RequestSuccessAction) -> BaseRequest<T> {
+    open func addSuccessAction(_ action: @escaping RequestSuccessAction) -> QuickRequestBase<T> {
         successActions.append(action)
         return self
     }
     /// 요청이 실패했을 때 실행할 것을 등록한다.
     @discardableResult
-    open func addFailAction(_ action: @escaping RequestFailAction) -> BaseRequest<T> {
+    open func addFailAction(_ action: @escaping RequestFailAction) -> QuickRequestBase<T> {
         failActions.append(action)
         return self
     }
