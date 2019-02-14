@@ -20,6 +20,7 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: MvsInt
     public var rxBag = DisposeBag()
     public var indent = [String: Any]()
     public var interactor: I? = nil
+    public let pageConsumer = StateConsumer<SharedState>()
 
     @discardableResult
     public func setIndent(_ key: String, _ value: Any) -> Self {
@@ -41,10 +42,10 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: MvsInt
     }
     
     override open func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        foot("viewWillDisappear(\(animated))")
         unbindEvents()
         pageConsumer.removeAll()
+        super.viewWillDisappear(animated)
+        foot("viewWillDisappear(\(animated))")
     }
 
     override open func viewDidDisappear(_ animated: Bool) {
@@ -70,9 +71,10 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: MvsInt
     open func unbindEvents() {
         rxBag = DisposeBag()
     }
-    /// bind Consumers
+
     /// called in viewWillAppear
-    open func bindConsumers() {}
+    open func bindConsumers() {
+    }
 }
 
 extension MvsSharedViewController: AlertPop {

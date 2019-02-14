@@ -43,7 +43,7 @@ This contains these. MVS (model-view-state) architecture components, UIKit exten
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'UIKit'
   s.dependency 'ReSwift'
-  s.dependency 'ReSwiftConsumer'
+  s.dependency 'ReSwiftConsumer', '~> 0.6'
   s.dependency 'RxSwift', '~> 4.0'
   s.dependency 'RxCocoa', '~> 4.0'
 end

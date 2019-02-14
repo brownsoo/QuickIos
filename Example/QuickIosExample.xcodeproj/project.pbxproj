@@ -286,7 +286,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-QuickIosExample-iOS/Pods-QuickIosExample-iOS-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-QuickIosExample-iOS/Pods-QuickIosExample-iOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/QuickIosComponent/QuickIosComponent.framework",
 				"${BUILT_PRODUCTS_DIR}/ReSwift/ReSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/ReSwiftConsumer/ReSwiftConsumer.framework",
@@ -307,7 +307,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuickIosExample-iOS/Pods-QuickIosExample-iOS-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-QuickIosExample-iOS/Pods-QuickIosExample-iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		6447E7ED1955F3F2C7EEAEC1 /* [CP] Check Pods Manifest.lock */ = {
