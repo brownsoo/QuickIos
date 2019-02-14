@@ -16,8 +16,9 @@ public protocol QuickRequest: Cancelable {
     var isCompleted: Bool { get }
     var urlString: String { get }
     var token: String? { get }
-
+    @discardableResult
     func addHeader(_ key: String, _ value: String) -> QuickRequestSubclass
+    @discardableResult
     func setTokenRequired() -> QuickRequestSubclass
     func call(resultHandler: @escaping (RequestResult<ResultType>) -> Void)
 }

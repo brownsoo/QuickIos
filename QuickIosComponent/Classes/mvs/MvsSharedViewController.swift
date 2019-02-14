@@ -44,6 +44,7 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: MvsInt
         super.viewWillDisappear(animated)
         foot("viewWillDisappear(\(animated))")
         unbindEvents()
+        pageConsumer.removeAll()
     }
 
     override open func viewDidDisappear(_ animated: Bool) {
