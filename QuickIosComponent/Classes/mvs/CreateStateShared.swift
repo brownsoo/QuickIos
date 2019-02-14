@@ -11,12 +11,12 @@ import ReSwift
 import ReSwiftConsumer
 
 extension MvsSharedViewController {
-    public static func newStateSharedInstance<SharedState: StateType & Equatable, I: MvsInteractor<SharedState>, T>(
+    public static func newStateSharedInstance<SharedState: StateType & Equatable, I: MvsInteractor<SharedState>>(
         store: Store<SharedState>?,
-        interactor: I?) -> T where T: MvsSharedViewController<SharedState, I> {
-        let vc = self.init() as! T
+        interactor: I?) -> MvsSharedViewController<SharedState, I> {
+        let vc = self.init() as! MvsSharedViewController<SharedState, I>
         vc.bind(store: store)
-        vc.interactor = interactor
+        vc.shardInteractor = interactor
         interactor?.addSharedConsumer(vc.pageConsumer)
         return vc
     }

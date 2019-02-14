@@ -16,10 +16,15 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: MvsInt
     LoadingIndicatable {
 
     private(set) var isFirstLayout = true
-    lazy public var loadingView = LoadingView()
+
+    public lazy var loadingView = LoadingView()
+
     public var rxBag = DisposeBag()
+
     public var indent = [String: Any]()
-    public var interactor: I? = nil
+
+    public var shardInteractor: I? = nil
+
     public let pageConsumer = StateConsumer<SharedState>()
 
     @discardableResult
@@ -37,15 +42,21 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: MvsInt
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         foot("viewWillAppear(\(animated))")
+        shardInteractor?.addSharedConsumer(pageConsumer)
         bindEvents()
         bindConsumers()
     }
     
     override open func viewWillDisappear(_ animated: Bool) {
+        foot("viewWillDisappear(\(animated))")
         unbindEvents()
         pageConsumer.removeAll()
+        shardInteractor?.removeSharedConsumer(pageConsumer)
         super.viewWillDisappear(animated)
-        foot("viewWillDisappear(\(animated))")
+    }
+
+    deinit {
+        shardInteractor = nil
     }
 
     override open func viewDidDisappear(_ animated: Bool) {
@@ -74,6 +85,10 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: MvsInt
 
     /// called in viewWillAppear
     open func bindConsumers() {
+        if pageConsumer.consumeInstantly, let ps = sharedStore?.state {
+            print("오호호호호호호호호 ")
+            shardInteractor?.newPageState(state: ps)
+        }
     }
 }
 

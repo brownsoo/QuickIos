@@ -16,23 +16,27 @@ open class MvsViewController<S, I: MvsInteractor<S>>
     : StateViewController<S>,
     LoadingIndicatable {
 
-    lazy public var loadingView = LoadingView()
+    public lazy var loadingView = LoadingView()
+
     public var rxBag = DisposeBag()
+
     private(set) var indent = [String: Any]()
+
     private(set) var isFirstLayout = true
     
     func setIndent(key: String, value: Any) {
         indent[key] = value
     }
-    
+
     open func createInteractor() -> I? { return nil }
-    public var interactor: I? {
-        return pageInteractor as? I
+
+    convenience required public init() {
+        self.init()
+        pageInteractor = createInteractor()
     }
 
     override open func viewDidLoad() {
         super.viewDidLoad()
-        pageInteractor = createInteractor()
         view.backgroundColor = UIColor.white
     }
     

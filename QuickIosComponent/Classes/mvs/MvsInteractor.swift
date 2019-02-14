@@ -16,10 +16,10 @@ open class MvsInteractor<PS: StateType & Equatable>: RePageInteractor<PS>,
     private let pageLogging: Middleware<PS> = { dispatch, getState in
         return { next in
             return { action in
+                next(action)
                 #if DEBUG
                 print("P𝍌 \(action)")
                 #endif
-                next(action)
             }
         }
     }
