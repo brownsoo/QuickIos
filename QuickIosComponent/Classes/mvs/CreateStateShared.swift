@@ -17,7 +17,6 @@ extension MvsSharedViewController {
         let vc = self.init() as! MvsSharedViewController<SharedState, I>
         vc.bind(store: store)
         vc.shardInteractor = interactor
-        interactor?.addSharedConsumer(vc.pageConsumer)
         return vc
     }
 }

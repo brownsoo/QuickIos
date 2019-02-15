@@ -8,18 +8,18 @@ import Foundation
 
 /// 년월일만 표현하는 모델
 public struct YearMonthDay: Equatable {
-    public let year: String
-    public let month: String
-    public let day: String
+    public let year: Int
+    public let month: Int
+    public let day: Int
     
-    public var y: Int {
-        return Int(year)!
+    public var y: String {
+        return String(year)
     }
-    public var m: Int {
-        return Int(month)!
+    public var m: String {
+        return String(month)
     }
-    public var d: Int {
-        return Int(day)!
+    public var d: String {
+        return String(day)
     }
     
     public var date: Date {
@@ -27,11 +27,20 @@ public struct YearMonthDay: Equatable {
     }
     
     public func yyyyMMdd(joiner: String = "/") -> String {
-        return [year, joiner, month, joiner, day].joined()
+        return [y,
+                YearMonthDay.twoDigitString(month),
+                YearMonthDay.twoDigitString(day)].joined(separator:joiner)
     }
     
     public func yyMMdd(joiner: String = "/") -> String {
-        return [year.from(2, until: -1)!, joiner, month, joiner, day].joined()
+        return [y.from(2, until: -1)!,
+                YearMonthDay.twoDigitString(month),
+                YearMonthDay.twoDigitString(day)].joined(separator:joiner)
+    }
+
+    public func MMdd(joiner: String = "/") -> String {
+        return [YearMonthDay.twoDigitString(month),
+                YearMonthDay.twoDigitString(day)].joined(separator:joiner)
     }
     
     fileprivate static func twoDigitString(_ value: Int) -> String {
@@ -43,19 +52,19 @@ public struct YearMonthDay: Equatable {
     }
     
     public func compare(versus: YearMonthDay) -> Int {
-        if y > versus.y {
+        if year > versus.year {
             return 1
-        } else if y < versus.y {
+        } else if year < versus.year {
             return -1
         }
-        if m > versus.m {
+        if month > versus.month {
             return 1
-        } else if m < versus.m {
+        } else if month < versus.month {
             return -1
         }
-        if d > versus.d {
+        if day > versus.day {
             return 1
-        } else if d < versus.d {
+        } else if day < versus.day {
             return -1
         } else {
             return 0
@@ -74,9 +83,9 @@ public extension YearMonthDay {
             let set: Set<Calendar.Component> = [.year, .month, .day]
             let comps = Calendar.current.dateComponents(set, from: date)
             self = YearMonthDay(
-                year: "\(comps.year!)",
-                month: YearMonthDay.twoDigitString(comps.month!),
-                day: YearMonthDay.twoDigitString(comps.day!))
+                year: comps.year!,
+                month: comps.month!,
+                day: comps.day!)
         } else {
             return nil
         }
@@ -87,16 +96,13 @@ public extension YearMonthDay {
     }
     
     public init(y: Int, m: Int, d: Int) {
-        self = YearMonthDay(
-            year: "\(y)",
-            month: YearMonthDay.twoDigitString(m),
-            day: YearMonthDay.twoDigitString(d))
+        self = YearMonthDay(year: y, month: m, day: d)
     }
     
     /// init with date
-    public init(_ date: Date) {
+    public init(_ date: Date, calendar: Calendar = TimeUtil.calendar) {
         let set: Set<Calendar.Component> = [.year, .month, .day]
-        let comps = TimeUtil.calendar.dateComponents(set, from: date)
+        let comps = calendar.dateComponents(set, from: date)
         self = YearMonthDay(
             y: comps.year!,
             m: comps.month!,
@@ -121,5 +127,11 @@ public extension YearMonthDay {
     static func <=(lhs: YearMonthDay, rhs: YearMonthDay) -> Bool {
         let val = lhs.compare(versus: rhs)
         return val < 0 || val == 0
+    }
+}
+
+public extension Date {
+    func toYearMonthDay() -> YearMonthDay {
+        return YearMonthDay(self)
     }
 }
