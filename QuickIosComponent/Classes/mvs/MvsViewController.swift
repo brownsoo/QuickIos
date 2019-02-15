@@ -31,7 +31,7 @@ open class MvsViewController<S, I: MvsInteractor<S>>
     open func createInteractor() -> I? { return nil }
 
     convenience required public init() {
-        self.init()
+        self.init(nibName: nil, bundle: nil)
         pageInteractor = createInteractor()
     }
 

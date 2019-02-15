@@ -49,10 +49,10 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: MvsInt
     
     override open func viewWillDisappear(_ animated: Bool) {
         foot("viewWillDisappear(\(animated))")
+        super.viewWillDisappear(animated)
+        shardInteractor?.removeSharedConsumer(pageConsumer)
         unbindEvents()
         pageConsumer.removeAll()
-        shardInteractor?.removeSharedConsumer(pageConsumer)
-        super.viewWillDisappear(animated)
     }
 
     deinit {
@@ -85,10 +85,6 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: MvsInt
 
     /// called in viewWillAppear
     open func bindConsumers() {
-        if pageConsumer.consumeInstantly, let ps = sharedStore?.state {
-            print("오호호호호호호호호 ")
-            shardInteractor?.newPageState(state: ps)
-        }
     }
 }
 
