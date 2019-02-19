@@ -23,7 +23,7 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: MvsInt
 
     public var indent = [String: Any]()
 
-    public var shardInteractor: I? = nil
+    public var sharedInteractor: I? = nil
 
     public let pageConsumer = StateConsumer<SharedState>()
 
@@ -42,7 +42,7 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: MvsInt
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         foot("viewWillAppear(\(animated))")
-        shardInteractor?.addSharedConsumer(pageConsumer)
+        sharedInteractor?.addSharedConsumer(pageConsumer)
         bindEvents()
         bindConsumers()
     }
@@ -50,13 +50,13 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: MvsInt
     override open func viewWillDisappear(_ animated: Bool) {
         foot("viewWillDisappear(\(animated))")
         super.viewWillDisappear(animated)
-        shardInteractor?.removeSharedConsumer(pageConsumer)
+        sharedInteractor?.removeSharedConsumer(pageConsumer)
         unbindEvents()
         pageConsumer.removeAll()
     }
 
     deinit {
-        shardInteractor = nil
+        sharedInteractor = nil
     }
 
     override open func viewDidDisappear(_ animated: Bool) {
