@@ -12,9 +12,8 @@ import ReSwift
 import ReSwiftConsumer
 import RxSwift
 
-open class MvsViewController<S, I: MvsInteractor<S>>
-    : StateViewController<S>,
-    LoadingIndicatable {
+open class MvsViewController<S: StateType & Equatable, I: RePageInteractor<S>>
+    : StateViewController<S>, LoadingIndicatable {
 
     public lazy var loadingView = LoadingView()
 

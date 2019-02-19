@@ -11,7 +11,7 @@ import ReSwiftConsumer
 import RxSwift
 import UIKit
 
-open class MvsSharedViewController<SharedState: StateType & Equatable, I: MvsInteractor<SharedState>>
+open class MvsSharedViewController<SharedState: StateType & Equatable, I: RePageInteractor<SharedState>>
     : StateSharedViewController<SharedState>,
     LoadingIndicatable {
 

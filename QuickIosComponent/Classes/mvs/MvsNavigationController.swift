@@ -12,7 +12,7 @@ import RxSwift
 import ReSwift
 import ReSwiftConsumer
 
-open class MvsNavigationController<S, I: MvsInteractor<S>>: StateNavigationController<S> {
+open class MvsNavigationController<S, I: RePageInteractor<S>>: StateNavigationController<S> {
 
     private(set) public var isFirstLayout = true
     public var rxBag = DisposeBag()
