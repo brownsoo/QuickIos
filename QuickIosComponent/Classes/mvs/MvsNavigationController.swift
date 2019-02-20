@@ -21,10 +21,12 @@ open class MvsNavigationController<S, I: RePageInteractor<S>>: StateNavigationCo
 
     convenience required public init() {
         self.init(nibName: nil, bundle: nil)
-        pageInteractor = createInteractor()
     }
 
     open override func viewDidLoad() {
+        // Before subscription, makes instance of RePageInteractor
+        pageInteractor = createInteractor()
+        // At this time, it makes subscription with initial state and middle wares
         super.viewDidLoad()
     }
     

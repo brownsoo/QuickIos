@@ -31,10 +31,12 @@ open class MvsViewController<S: StateType & Equatable, I: RePageInteractor<S>>
 
     convenience required public init() {
         self.init(nibName: nil, bundle: nil)
-        pageInteractor = createInteractor()
     }
 
     override open func viewDidLoad() {
+        // Before subscription, makes instance of RePageInteractor
+        pageInteractor = createInteractor()
+        // At this time, it makes subscription with initial state and middle wares
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
     }
