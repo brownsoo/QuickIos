@@ -8,12 +8,16 @@
 import Foundation
 import RxSwift
 
-open class BaseViewController: UIViewController, LoadingIndicatable, ForegroundNotable {
+open class BaseViewController: UIViewController,
+    LoadingIndicatable, ForegroundNotable, IntentContainer {
 
-    lazy public var loadingView = LoadingView()
+    public lazy var loadingView = LoadingView()
+
     public var rxBag = DisposeBag()
-    private(set) var indent = [String: Any]()
+
     private(set) var isFirstLayout = true
+
+    public private(set) var intent: NSMutableDictionary = NSMutableDictionary()
 
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -31,10 +35,6 @@ open class BaseViewController: UIViewController, LoadingIndicatable, ForegroundN
         super.viewWillDisappear(animated)
         foot("viewWillDisappear")
         unbindEvents()
-    }
-
-    public func setIndent(_ key: String, _ value: Any) {
-        indent[key] = value
     }
 
     override open func viewDidLayoutSubviews() {

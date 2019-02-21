@@ -13,19 +13,15 @@ import ReSwiftConsumer
 import RxSwift
 
 open class MvsViewController<S: StateType & Equatable, I: RePageInteractor<S>>
-    : StateViewController<S>, LoadingIndicatable {
+    : StateViewController<S>, LoadingIndicatable, IntentContainer {
+
+    private(set) var isFirstLayout = true
 
     public lazy var loadingView = LoadingView()
 
     public var rxBag = DisposeBag()
 
-    private(set) var indent = [String: Any]()
-
-    private(set) var isFirstLayout = true
-    
-    func setIndent(key: String, value: Any) {
-        indent[key] = value
-    }
+    public private(set) var intent: NSMutableDictionary = NSMutableDictionary()
 
     open func createInteractor() -> I? { return nil }
 

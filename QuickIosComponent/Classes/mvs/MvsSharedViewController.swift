@@ -13,7 +13,7 @@ import UIKit
 
 open class MvsSharedViewController<SharedState: StateType & Equatable, I: RePageInteractor<SharedState>>
     : StateSharedViewController<SharedState>,
-    LoadingIndicatable {
+    LoadingIndicatable, IntentContainer {
 
     private(set) var isFirstLayout = true
 
@@ -21,17 +21,11 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: RePage
 
     public var rxBag = DisposeBag()
 
-    public var indent = [String: Any]()
+    public private(set) var intent: NSMutableDictionary = NSMutableDictionary()
 
     public var sharedInteractor: I? = nil
 
     public let pageConsumer = StateConsumer<SharedState>()
-
-    @discardableResult
-    public func setIndent(_ key: String, _ value: Any) -> Self {
-        indent[key] = value
-        return self
-    }
 
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -82,7 +76,7 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: RePage
     open func unbindEvents() {
         rxBag = DisposeBag()
     }
-
+    /// bind Consumers
     /// called in viewWillAppear
     open func bindConsumers() {
     }

@@ -12,10 +12,14 @@ import RxSwift
 import ReSwift
 import ReSwiftConsumer
 
-open class MvsNavigationController<S, I: RePageInteractor<S>>: StateNavigationController<S> {
+open class MvsNavigationController<S, I: RePageInteractor<S>>: StateNavigationController<S>,
+    IntentContainer {
 
-    private(set) public var isFirstLayout = true
+    private(set) var isFirstLayout = true
+
     public var rxBag = DisposeBag()
+
+    public private(set) var intent: NSMutableDictionary = NSMutableDictionary()
 
     open func createInteractor() -> I? { return nil }
 
