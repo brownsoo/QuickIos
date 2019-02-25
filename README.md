@@ -11,7 +11,11 @@
 
 This Library is just Quick iOS development for me.
 
-This contains these. MVS (model-view-state) architecture components, UIKit extensions, Useful components and so on.
+This contains these. 
+
+* MVS (model-view-state) architecture components using [ReSwift](https://github.com/ReSwift/ReSwift), [ReSwiftConsumer](https://github.com/brownsoo/ReSwift-Consumer)
+* UIKit extensions
+* Useful components and so on.
 
 
 ## Example
