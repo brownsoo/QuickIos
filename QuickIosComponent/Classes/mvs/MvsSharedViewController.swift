@@ -19,7 +19,7 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: RePage
 
     public lazy var loadingView = LoadingView()
 
-    public var rxBag = DisposeBag()
+    public var rxUIBag = DisposeBag()
 
     public private(set) var intent: NSMutableDictionary = NSMutableDictionary()
 
@@ -37,7 +37,7 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: RePage
         super.viewWillAppear(animated)
         foot("viewWillAppear(\(animated))")
         sharedInteractor?.addSharedConsumer(pageConsumer)
-        bindEvents()
+        bindUIEvents()
         bindConsumers()
     }
     
@@ -45,7 +45,7 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: RePage
         foot("viewWillDisappear(\(animated))")
         super.viewWillDisappear(animated)
         sharedInteractor?.removeSharedConsumer(pageConsumer)
-        unbindEvents()
+        unbindUIEvents()
         pageConsumer.removeAll()
     }
 
@@ -70,11 +70,11 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: RePage
     }
     /// bind UI events
     /// called in viewWillAppear
-    open func bindEvents() {}
+    open func bindUIEvents() {}
     /// unbind UI events
     /// called in viewWillDisappear
-    open func unbindEvents() {
-        rxBag = DisposeBag()
+    open func unbindUIEvents() {
+        rxUIBag = DisposeBag()
     }
     /// bind Consumers
     /// called in viewWillAppear

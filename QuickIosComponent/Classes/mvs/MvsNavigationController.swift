@@ -36,14 +36,14 @@ open class MvsNavigationController<S, I: RePageInteractor<S>>: StateNavigationCo
     
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        bindEvents()
+        bindUIEvents()
         bindConsumers()
     }
     
     override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         (pageInteractor as? ViewAttach)?.detachView()
-        unbindEvents()
+        unbindUIEvents()
     }
 
     override open func viewDidLayoutSubviews() {
@@ -73,10 +73,10 @@ open class MvsNavigationController<S, I: RePageInteractor<S>>: StateNavigationCo
 
     /// bind UI events
     /// called in viewWillAppear
-    open func bindEvents() {}
+    open func bindUIEvents() {}
     /// unbind UI events
     /// called in viewWillDisappear
-    open func unbindEvents() {
+    open func unbindUIEvents() {
         rxBag = DisposeBag()
     }
     /// bind Consumers

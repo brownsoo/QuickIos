@@ -19,7 +19,7 @@ open class MvsViewController<S: StateType & Equatable, I: RePageInteractor<S>>
 
     public lazy var loadingView = LoadingView()
 
-    public var rxBag = DisposeBag()
+    public var rxUIBag = DisposeBag()
 
     public private(set) var intent: NSMutableDictionary = NSMutableDictionary()
 
@@ -36,11 +36,11 @@ open class MvsViewController<S: StateType & Equatable, I: RePageInteractor<S>>
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
     }
-    
+
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         foot("viewWillAppear")
-        bindEvents()
+        bindUIEvents()
         bindConsumers()
     }
     
@@ -48,7 +48,7 @@ open class MvsViewController<S: StateType & Equatable, I: RePageInteractor<S>>
         super.viewWillDisappear(animated)
         foot("viewWillDisappear")
         (pageInteractor as? ViewAttach)?.detachView()
-        unbindEvents()
+        unbindUIEvents()
     }
     
     override open func viewDidLayoutSubviews() {
@@ -64,11 +64,11 @@ open class MvsViewController<S: StateType & Equatable, I: RePageInteractor<S>>
     }
     /// bind UI events
     /// called in viewWillAppear
-    open func bindEvents() {}
+    open func bindUIEvents() {}
     /// unbind UI events
     /// called in viewWillDisappear
-    open func unbindEvents() {
-        rxBag = DisposeBag()
+    open func unbindUIEvents() {
+        rxUIBag = DisposeBag()
     }
     /// bind Consumers
     /// called in viewWillAppear

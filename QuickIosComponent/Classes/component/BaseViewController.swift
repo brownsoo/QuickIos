@@ -13,7 +13,7 @@ open class BaseViewController: UIViewController,
 
     public lazy var loadingView = LoadingView()
 
-    public var rxBag = DisposeBag()
+    public var rxUIBag = DisposeBag()
 
     private(set) var isFirstLayout = true
 
@@ -28,13 +28,13 @@ open class BaseViewController: UIViewController,
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         foot("viewWillAppear")
-        bindEvents()
+        bindUIEvents()
     }
 
     override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         foot("viewWillDisappear")
-        unbindEvents()
+        unbindUIEvents()
     }
 
     override open func viewDidLayoutSubviews() {
@@ -53,11 +53,11 @@ open class BaseViewController: UIViewController,
     }
     /// bind UI events
     /// called in viewWillAppear
-    open func bindEvents() {}
+    open func bindUIEvents() {}
     /// unbind UI events
     /// called in viewWillDisappear
-    open func unbindEvents() {
-        rxBag = DisposeBag()
+    open func unbindUIEvents() {
+        rxUIBag = DisposeBag()
     }
 }
 
