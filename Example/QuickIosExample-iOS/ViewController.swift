@@ -27,23 +27,29 @@ class ViewController: UIViewController {
         stack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
         stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40).isActive = true
 
+        let lb = UILabel()
+        lb.text = "QuickButton"
+        lb.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        stack.addArrangedSubview(lb)
 
         var bt = QuickButton()
-        bt.setTitle("TITLE", for: .normal)
+        bt.setTitle("Default", for: .normal)
         stack.addArrangedSubview(bt)
 
         bt = QuickButton()
-        bt.setTitle("TITLE", for: .normal)
+        bt.setTitle("Default: disabled", for: .normal)
         bt.isEnabled = false
         stack.addArrangedSubview(bt)
 
         bt = QuickButton()
-        bt.setTitle("TITLE", for: .normal)
+        bt.setTitle("Default: gradient", for: .normal)
+        bt.setTitleColor(UIColor.white, for: .normal)
+        bt.setTitleColor(UIColor.lightGray, for: .highlighted)
         bt.useGradient = true
         stack.addArrangedSubview(bt)
 
         bt = QuickButton()
-        bt.setTitle("TITLE", for: .normal)
+        bt.setTitle("Default: gradient, disabled", for: .normal)
         bt.useGradient = true
         bt.isEnabled = false
         stack.addArrangedSubview(bt)
