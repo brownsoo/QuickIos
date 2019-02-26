@@ -13,8 +13,6 @@ open class BaseViewController: UIViewController,
 
     public lazy var loadingView = LoadingView()
 
-    public var rxUIBag = DisposeBag()
-
     private(set) var isFirstLayout = true
 
     public private(set) var intent: NSMutableDictionary = NSMutableDictionary()
@@ -57,7 +55,6 @@ open class BaseViewController: UIViewController,
     /// unbind UI events
     /// called in viewWillDisappear
     open func unbindUIEvents() {
-        rxUIBag = DisposeBag()
     }
 }
 

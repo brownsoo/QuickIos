@@ -19,8 +19,6 @@ open class MvsViewController<S: StateType & Equatable, I: RePageInteractor<S>>
 
     public lazy var loadingView = LoadingView()
 
-    public var rxUIBag = DisposeBag()
-
     public private(set) var intent: NSMutableDictionary = NSMutableDictionary()
 
     open func createInteractor() -> I? { return nil }
@@ -68,7 +66,6 @@ open class MvsViewController<S: StateType & Equatable, I: RePageInteractor<S>>
     /// unbind UI events
     /// called in viewWillDisappear
     open func unbindUIEvents() {
-        rxUIBag = DisposeBag()
     }
     /// bind Consumers
     /// called in viewWillAppear

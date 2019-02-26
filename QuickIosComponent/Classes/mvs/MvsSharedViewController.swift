@@ -19,8 +19,6 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: RePage
 
     public lazy var loadingView = LoadingView()
 
-    public var rxUIBag = DisposeBag()
-
     public private(set) var intent: NSMutableDictionary = NSMutableDictionary()
 
     public var sharedInteractor: I? = nil
@@ -74,7 +72,6 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: RePage
     /// unbind UI events
     /// called in viewWillDisappear
     open func unbindUIEvents() {
-        rxUIBag = DisposeBag()
     }
     /// bind Consumers
     /// called in viewWillAppear
