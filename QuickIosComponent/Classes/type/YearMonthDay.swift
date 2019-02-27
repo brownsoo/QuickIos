@@ -6,10 +6,14 @@
 
 import Foundation
 
-/// 년월일만 표현하는 모델
+/// Structure to display only year, month, day
+
 public struct YearMonthDay: Equatable {
+
     public let year: Int
+
     public let month: Int
+
     public let day: Int
     
     public var y: String {
