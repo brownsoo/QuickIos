@@ -16,6 +16,8 @@ open class QuickButton: JustButton {
     private static let defaultColors = [UIColor(red: 255, green: 111, blue: 97),
                                         UIColor(red: 211, green: 80, blue: 145)]
 
+    private let pi = CGFloat(Float.pi)
+
     private var gradientLayer: CAGradientLayer = {
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = defaultColors.map { $0.cgColor }
@@ -29,15 +31,35 @@ open class QuickButton: JustButton {
             gradientLayer.colors = gradientColors.map{ $0.cgColor }
         }
     }
-    public var gradientRotation: Float = 0 {
+
+    /// Center position for gradientRotation
+    public var gradientRotationCenter: CGPoint = CGPoint(x: 0.5, y: 0.5)
+
+    /// Rotate gradient in degree
+    /// It changes startPoint and endPoint of gradient layer
+    public func gradientRotate(degree: CGFloat) {
+        let radian = degree / 180.0 * pi
+        let startX = gradientRotationCenter.x
+        let startY = gradientRotationCenter.y
+        self.gradientStartPoint = CGPoint(
+            x: CGFloat(cos(radian + pi) * startX + 0.5),
+            y: CGFloat(sin(radian + pi) * startY + 0.5))
+        let endX = 1 - gradientRotationCenter.x
+        let endY = 1 - gradientRotationCenter.y
+        self.gradientEndPoint = CGPoint(
+            x: CGFloat(cos(radian) * endX + 0.5),
+            y: CGFloat(sin(radian) * endY + 0.5))
+    }
+
+    public var gradientStartPoint: CGPoint = CGPoint(x: 0, y: 0.5) {
         didSet {
-            let radian = gradientRotation / 180.0 * Float.pi
-            self.gradientLayer.startPoint = CGPoint(
-                x: CGFloat(cos(radian + Float.pi) * 0.5 + 0.5),
-                y: CGFloat(sin(radian + Float.pi) * 0.5 + 0.5))
-            self.gradientLayer.endPoint = CGPoint(
-                x: CGFloat(cos(radian) * 0.5 + 0.5),
-                y: CGFloat(sin(radian) * 0.5 + 0.5))
+            self.gradientLayer.startPoint = gradientStartPoint
+        }
+    }
+
+    public var gradientEndPoint: CGPoint = CGPoint(x: 1.0, y: 0.5) {
+        didSet {
+            self.gradientLayer.endPoint = gradientEndPoint
         }
     }
 
