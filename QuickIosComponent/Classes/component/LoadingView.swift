@@ -42,13 +42,13 @@ public class LoadingView: UIView {
         onInit()
     }
     
-    var indicatorColor: UIColor = UIColor.white {
+    public var indicatorColor: UIColor = UIColor.white {
         didSet {
             indicator.color = indicatorColor
         }
     }
     
-    var boxColor: UIColor = UIColor.black {
+    public var boxColor: UIColor = UIColor.black.alpha(0.5) {
         didSet {
             box.backgroundColor = boxColor
         }
