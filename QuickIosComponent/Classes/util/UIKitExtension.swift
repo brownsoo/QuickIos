@@ -272,12 +272,12 @@ public extension UIViewController {
         }
     }
     /// 네비게이션을 pop 하거나 presented 뷰를 dismiss 한다.
-    public func dismissEasy() {
+    public func dismissEasy(animated: Bool = true) {
         DispatchQueue.main.async {
             if let nc = self.navigationController {
-                nc.popViewController(animated: true)
+                nc.popViewController(animated: animated)
             } else {
-                self.dismiss(animated: true, completion: nil)
+                self.dismiss(animated: animated, completion: nil)
             }
         }
     }
