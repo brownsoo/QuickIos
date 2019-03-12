@@ -6,14 +6,17 @@
 
 import Foundation
 
-public protocol QuickRequest: Cancelable {
-
-    associatedtype ResultType
-    associatedtype QuickRequestSubclass
-    
+public protocol RequestStatusNotable {
     var isCalled: Bool { get }
     var isCancelled: Bool { get }
     var isCompleted: Bool { get }
+}
+
+public protocol QuickRequest: Cancelable, RequestStatusNotable {
+
+    associatedtype ResultType
+    associatedtype QuickRequestSubclass
+
     var urlString: String { get }
     var token: String? { get }
     @discardableResult
