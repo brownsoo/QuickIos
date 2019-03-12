@@ -35,15 +35,23 @@ public extension String {
 }
 
 public extension NSMutableAttributedString {
+
+    @discardableResult
     func bold(fontSize: CGFloat? = nil, fontName: String? = nil) -> NSMutableAttributedString {
         return applyFontStyle(fontSize: fontSize, fontName: fontName, weight: .bold)
     }
+
+    @discardableResult
     func black(fontSize: CGFloat? = nil, fontName: String? = nil) -> NSMutableAttributedString {
         return applyFontStyle(fontSize: fontSize, fontName: fontName, weight: .black)
     }
+
+    @discardableResult
     func regular(fontSize: CGFloat? = nil, fontName: String? = nil) -> NSMutableAttributedString {
         return applyFontStyle(fontSize: fontSize, fontName: fontName, weight: .regular)
     }
+
+    @discardableResult
     func applyFontStyle(fontSize: CGFloat? = nil, fontName: String? = nil, weight: UIFont.Weight) -> NSMutableAttributedString {
         let size = fontSize ?? 12
         var font = fontName != nil ? UIFont(name: fontName!, size: size)
@@ -53,34 +61,55 @@ public extension NSMutableAttributedString {
         }
         return applyFont(font!)
     }
+
+    @discardableResult
     func applyFont(_ font: UIFont) -> NSMutableAttributedString {
-        setAttributes([NSAttributedString.Key.font: font], range: NSRange(location: 0, length: self.length))
+        addAttribute(NSAttributedString.Key.font, value:font,
+            range:NSRange(location: 0, length: self.length))
         return self
     }
+
+    @discardableResult
     func underline(style: NSUnderlineStyle = .single, color: UIColor? =  nil) -> NSMutableAttributedString {
-        var attrs: [NSAttributedString.Key: Any] = [NSAttributedString.Key.underlineStyle: style.rawValue]
+        addAttribute(NSAttributedString.Key.underlineStyle, value:style.rawValue,
+            range:NSRange(location: 0, length: self.length))
         if color != nil {
-            attrs[NSAttributedString.Key.underlineColor] = color!
+            addAttribute(NSAttributedString.Key.underlineColor, value:color!,
+                range:NSRange(location: 0, length: self.length))
         }
-        setAttributes(attrs, range: NSRange(location: 0, length: self.length))
         return self
     }
+
+    @discardableResult
     func add(_ attrString: NSAttributedString) -> NSMutableAttributedString {
         let m = self
         m.append(attrString)
         return m
     }
+
+    @discardableResult
     func add(_ string: String) -> NSMutableAttributedString {
         let m = self
         m.append(NSAttributedString(string: string))
         return m
     }
 
-    func color(_ color: UIColor) -> NSMutableAttributedString {
-        var attrs = self.attributes(at: 0, effectiveRange: nil)
-        attrs[NSAttributedString.Key.foregroundColor] = color
-        setAttributes(attrs, range: NSRange(location: 0, length: self.length))
+    @discardableResult
+    func color(_ color: UIColor, range: NSRange? = nil) -> NSMutableAttributedString {
+        addAttribute(NSAttributedString.Key.foregroundColor, value: color,
+            range: range ?? NSRange(location: 0, length: self.length))
         return self
+    }
+
+    @discardableResult
+    func lineSpacing(lineSpacing: CGFloat = 0, lineHeightMultiple: CGFloat = 0) -> NSMutableAttributedString {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = lineSpacing
+        paragraphStyle.lineHeightMultiple = lineHeightMultiple
+        addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle,
+            range:NSRange(location: 0, length: self.length))
+        return self
+
     }
 }
 
