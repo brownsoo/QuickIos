@@ -197,7 +197,7 @@ public extension UIImage {
 
     @discardableResult
     func solid(_ color: UIColor, width: CGFloat = 1, height: CGFloat = 1) -> UIImage {
-        let rect  = CGRect(x: 0, y: 0, width: width, height: height)
+        let rect = CGRect(x: 0, y: 0, width: width, height: height)
         let renderer = UIGraphicsImageRenderer(size: rect.size)
         let result = renderer.image { c in
             color.setFill()
@@ -255,11 +255,14 @@ public extension UIImage {
 }
 
 public extension UIViewController {
+
     /// DispatchQueue.main.async 으로 전달
+    @objc
     public func runOnMain(_ block:@escaping ()->Void) {
         self.runOnMain(block, delay: 0)
     }
     /// DispatchQueue.main.asyncAfter 로 전달
+    @objc
     public func runOnMain(_ block:@escaping ()->Void, delay: TimeInterval) {
         if delay > 0 {
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
@@ -272,6 +275,7 @@ public extension UIViewController {
         }
     }
     /// 네비게이션을 pop 하거나 presented 뷰를 dismiss 한다.
+    @objc
     public func dismissEasy(animated: Bool = true) {
         DispatchQueue.main.async {
             if let nc = self.navigationController {
@@ -281,7 +285,8 @@ public extension UIViewController {
             }
         }
     }
-    
+
+    @objc
     public func pushOrPresent(_ vc: UIViewController, animated: Bool) {
         if let nc = navigationController {
             nc.pushViewController(vc, animated: animated)
