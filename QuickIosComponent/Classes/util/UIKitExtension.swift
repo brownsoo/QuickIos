@@ -144,12 +144,21 @@ public extension UIView {
         if fill {
             self.layer.backgroundColor = color.withAlphaComponent(0.2).cgColor
         }
-        for child in self.subviews {
+
+        let drawChild = { (child: UIView) in
             child.layer.borderColor = color.withAlphaComponent(0.5).cgColor
             child.layer.borderWidth = 1
             if fill {
                 self.layer.backgroundColor = color.withAlphaComponent(0.2).cgColor
             }
+        }
+        for child in self.subviews {
+            if let s = child as? UIStackView {
+                s.arrangedSubviews.forEach { drawChild($0) }
+                continue
+            }
+            drawChild(child)
+
         }
     }
 
