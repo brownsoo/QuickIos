@@ -10,7 +10,7 @@ import Foundation
 
 
 public extension String {
-    func mutable(fontSize: CGFloat? = nil) -> NSMutableAttributedString {
+    func attributed(fontSize: CGFloat? = nil) -> NSMutableAttributedString {
         if let size = fontSize {
             return NSMutableAttributedString(string: self,
                 attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: size)])
