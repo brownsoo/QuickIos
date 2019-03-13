@@ -36,12 +36,16 @@ open class PaddingView: JustView {
         addSubview(contentView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
         let leading = contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: padding.left)
+        leading.priority = .required
         leading.isActive = true
         let trailing = contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -padding.right)
+        trailing.priority = .required
         trailing.isActive = true
         let top = contentView.topAnchor.constraint(equalTo: self.topAnchor, constant: padding.top)
+        top.priority = .required
         top.isActive = true
         let bottom = contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -padding.bottom)
+        bottom.priority = .required
         bottom.isActive = true
 
         contentConstraints["leading"] = leading
