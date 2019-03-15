@@ -20,6 +20,14 @@ public protocol HideKeyboardWhenTapDelegate {
                              duration: Double,
                              option: UIView.AnimationOptions,
                              visible: Bool)
+
+    func shouldHideKeyboard(touchedView: UIView, touchPoint: CGPoint) -> Bool
+}
+
+public extension HideKeyboardWhenTapDelegate {
+    func shouldHideKeyboard(touchedView: UIView, touchPoint: CGPoint) -> Bool {
+        return true
+    }
 }
 
 extension UIViewController {
@@ -39,10 +47,17 @@ extension UIViewController {
     }
     
     @objc
-    open func handleTap(sender: UITapGestureRecognizer) {
-        if let touchView = sender.view,
-            touchView is UITextInput {
-            return
+    open func handleTap(gestureRecognizer: UITapGestureRecognizer) {
+        if let touchView = gestureRecognizer.view {
+            print("keyboard handleTap ----- \(touchView)")
+            let point = gestureRecognizer.location(in: touchView)
+            if let delegateHandling = (self as? HideKeyboardWhenTapDelegate)?.shouldHideKeyboard(touchedView: touchView, touchPoint: point),
+               !delegateHandling {
+                return
+            }
+            if touchView is UITextField {
+                return
+            }
         }
         view.endEditing(true)
     }

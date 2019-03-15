@@ -10,9 +10,19 @@ public protocol Also {
 
 public extension Also {
     @discardableResult
-    public func also(_ block: (Self) -> Void) -> Self {
+    func also(_ block: (Self) -> Void) -> Self {
         block(self)
         return self
     }
 }
+
+public extension Also where Self : UIView {
+}
+
+public extension Also where Self : UIButton {
+}
+
+public extension Also where Self : AnyObject { }
+
+
 
