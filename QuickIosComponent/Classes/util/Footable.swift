@@ -10,7 +10,7 @@ import Foundation
 
 public protocol Footable: AnyObject {
     var whoseFoot: String { get }
-    func foot(_ items: Any...)
+    func Log(_ items: Any...)
 }
 
 public protocol FootableName {
@@ -22,13 +22,14 @@ public extension Footable {
         if let who = self as? FootableName {
             return who.who
         }
-        return String(describing: self)
+        return #file.components(separatedBy: "/").last ?? String(describing: self)
     }
     
-    func foot(_ items: Any...) -> Void {
+    func Log(_ items: Any..., line: Int = #line) -> Void {
         #if DEBUG
         let th = Thread.current.isMainThread ? "main": Thread.current.name ?? "-"
-        print("🐾", th , whoseFoot, items.map { "\($0)" }.joined(separator: ", "), separator: " | ")
+        print("🐾", th , whoseFoot, "(LINE \(line)) ", #function, 
+            items.map { "\($0)" }.joined(separator: ", "), separator: " :: ")
         #endif
     }
 }
@@ -38,6 +39,6 @@ extension NSObject: Footable {
         if let who = self as? FootableName {
             return who.who
         }
-        return String(describing: self)
+        return #file.components(separatedBy: "/").last ?? String(describing: self)
     }
 }

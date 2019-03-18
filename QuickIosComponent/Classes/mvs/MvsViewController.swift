@@ -37,14 +37,12 @@ open class MvsViewController<S: StateType & Equatable, I: RePageInteractor<S>>
 
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        foot("viewWillAppear")
         bindUIEvents()
         bindConsumers()
     }
     
     override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        foot("viewWillDisappear")
         (pageInteractor as? ViewAttach)?.detachView()
         unbindUIEvents()
     }
@@ -58,7 +56,6 @@ open class MvsViewController<S: StateType & Equatable, I: RePageInteractor<S>>
     }
     /// once called at first layout time
     open func firstDidLayout() {
-        foot("firstDidLayout")
     }
     /// bind UI events
     /// called in viewWillAppear

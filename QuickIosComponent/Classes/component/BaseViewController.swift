@@ -19,19 +19,16 @@ open class BaseViewController: UIViewController,
 
     override open func viewDidLoad() {
         super.viewDidLoad()
-        foot("viewDidLoad()")
         view.backgroundColor = UIColor.white
     }
 
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        foot("viewWillAppear")
         bindUIEvents()
     }
 
     override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        foot("viewWillDisappear")
         unbindUIEvents()
     }
 

@@ -27,20 +27,17 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: RePage
 
     override open func viewDidLoad() {
         super.viewDidLoad()
-        foot("viewDidLoad()")
         view.backgroundColor = UIColor.white
     }
     
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        foot("viewWillAppear(\(animated))")
         sharedInteractor?.addSharedConsumer(pageConsumer)
         bindUIEvents()
         bindConsumers()
     }
     
     override open func viewWillDisappear(_ animated: Bool) {
-        foot("viewWillDisappear(\(animated))")
         super.viewWillDisappear(animated)
         sharedInteractor?.removeSharedConsumer(pageConsumer)
         unbindUIEvents()
