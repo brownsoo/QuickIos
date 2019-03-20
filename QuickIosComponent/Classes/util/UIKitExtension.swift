@@ -155,9 +155,9 @@ public extension UIView {
         for child in self.subviews {
             if let s = child as? UIStackView {
                 s.arrangedSubviews.forEach { drawChild($0) }
-                continue
+            } else {
+                drawChild(child)
             }
-            drawChild(child)
 
         }
     }
