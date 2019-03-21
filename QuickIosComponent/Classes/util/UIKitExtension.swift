@@ -136,31 +136,6 @@ public extension UIView {
             return self.centerYAnchor
         }
     }
-    
-    /// 디버깅용: 보더에 아웃라인을 그린다.
-    public func drawOutline(_ color: UIColor = UIColor.red, fill: Bool = false) {
-        self.layer.borderColor = color.withAlphaComponent(0.3).cgColor
-        self.layer.borderWidth = 0.3
-        if fill {
-            self.layer.backgroundColor = color.withAlphaComponent(0.2).cgColor
-        }
-
-        let drawChild = { (child: UIView) in
-            child.layer.borderColor = color.withAlphaComponent(0.5).cgColor
-            child.layer.borderWidth = 1
-            if fill {
-                self.layer.backgroundColor = color.withAlphaComponent(0.2).cgColor
-            }
-        }
-        for child in self.subviews {
-            if let s = child as? UIStackView {
-                s.arrangedSubviews.forEach { drawChild($0) }
-            } else {
-                drawChild(child)
-            }
-
-        }
-    }
 
     public func toImage() -> UIImage? {
         if #available(iOS 10.0, *) {
