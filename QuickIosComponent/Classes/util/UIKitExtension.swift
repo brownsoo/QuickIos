@@ -11,15 +11,15 @@ import QuartzCore
 
 public extension UIApplication {
     
-    public class func appVersion() -> String {
+    class func appVersion() -> String {
         return Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
     }
     
-    public class func appBuild() -> String {
+    class func appBuild() -> String {
         return Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as! String
     }
     
-    public class func versionBuild() -> String {
+    class func versionBuild() -> String {
         let version = appVersion(), build = appBuild()
         return version == build ? "v\(version)" : "v\(version)(\(build))"
     }
@@ -28,11 +28,11 @@ public extension UIApplication {
 
 public extension UIColor {
     
-    public func alpha(_ a: CGFloat) -> UIColor {
+    func alpha(_ a: CGFloat) -> UIColor {
         return self.withAlphaComponent(a)
     }
 
-    public func brightness(brightness: CGFloat) -> UIColor {
+    func brightness(brightness: CGFloat) -> UIColor {
         var H: CGFloat = 0, S: CGFloat = 0, B: CGFloat = 0, A: CGFloat = 0
         if getHue(&H, saturation: &S, brightness: &B, alpha: &A) {
             //B += (brightness - 1.0)
@@ -43,7 +43,7 @@ public extension UIColor {
         return self
     }
     
-    public var toHexString: String {
+    var toHexString: String {
         var r: CGFloat = 0
         var g: CGFloat = 0
         var b: CGFloat = 0
@@ -59,7 +59,7 @@ public extension UIColor {
         )
     }
     
-    public convenience init(hex: String) {
+    convenience init(hex: String) {
         let scanner = Scanner(string: hex)
         scanner.scanLocation = 0
         var rgbValue: UInt64 = 0
@@ -76,7 +76,7 @@ public extension UIColor {
         )
     }
 
-    public convenience init(red: Int, green: Int, blue: Int) {
+    convenience init(red: Int, green: Int, blue: Int) {
         assert(red >= 0 && red <= 255, "Invalid red component")
         assert(green >= 0 && green <= 255, "Invalid red component")
         assert(blue >= 0 && blue <= 255, "Invalid red component")
@@ -84,16 +84,16 @@ public extension UIColor {
         self.init(red: CGFloat(red)/255.0, green: CGFloat(green)/255.0, blue: CGFloat(blue)/255.0, alpha: 1.0)
     }
 
-    public static func color255(_ rgb255: Int ...) -> UIColor {
+    static func color255(_ rgb255: Int ...) -> UIColor {
         assert(rgb255.count > 2, "Invalid component")
         return UIColor(red: rgb255[0], green: rgb255[1], blue: rgb255[2])
     }
     
-    public convenience init(rgb: Int) {
+    convenience init(rgb: Int) {
         self.init(red: (rgb >> 16) & 0xff, green:(rgb >> 8) & 0xff, blue: rgb & 0xff)
     }
     
-    public func toImage(width: CGFloat, height: CGFloat) -> UIImage {
+    func toImage(width: CGFloat, height: CGFloat) -> UIImage {
         let size = CGSize(width: width, height: height)
         let renderer = UIGraphicsImageRenderer(size: size)
         return renderer.image { c in
@@ -137,7 +137,7 @@ public extension UIView {
         }
     }
 
-    public func toImage() -> UIImage? {
+    func toImage() -> UIImage? {
         if #available(iOS 10.0, *) {
             let renderer = UIGraphicsImageRenderer(bounds: bounds)
             return renderer.image { context in
@@ -157,7 +157,7 @@ public extension UIView {
     }
     
     @discardableResult
-    public func addTap(_ target: Any, action: Selector) -> UITapGestureRecognizer {
+    func addTap(_ target: Any, action: Selector) -> UITapGestureRecognizer {
         let tap = UITapGestureRecognizer(target: target, action: action)
         tap.numberOfTapsRequired = 1
         addGestureRecognizer(tap)
@@ -242,12 +242,12 @@ public extension UIViewController {
 
     /// DispatchQueue.main.async 으로 전달
     @objc
-    public func runOnMain(_ block:@escaping ()->Void) {
+    func runOnMain(_ block:@escaping ()->Void) {
         self.runOnMain(block, delay: 0)
     }
     /// DispatchQueue.main.asyncAfter 로 전달
     @objc
-    public func runOnMain(_ block:@escaping ()->Void, delay: TimeInterval) {
+    func runOnMain(_ block:@escaping ()->Void, delay: TimeInterval) {
         if delay > 0 {
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 block()
@@ -260,7 +260,7 @@ public extension UIViewController {
     }
     /// 네비게이션을 pop 하거나 presented 뷰를 dismiss 한다.
     @objc
-    public func dismissEasy(animated: Bool = true) {
+    func dismissEasy(animated: Bool = true) {
         DispatchQueue.main.async {
             if let nc = self.navigationController {
                 nc.popViewController(animated: animated)
@@ -271,7 +271,7 @@ public extension UIViewController {
     }
 
     @objc
-    public func pushOrPresent(_ vc: UIViewController, animated: Bool) {
+    func pushOrPresent(_ vc: UIViewController, animated: Bool) {
         if let nc = navigationController {
             nc.pushViewController(vc, animated: animated)
         } else {

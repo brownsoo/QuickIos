@@ -4,14 +4,14 @@ PODS:
     - ReSwiftConsumer (~> 0.6)
     - RxCocoa (~> 4.0)
     - RxSwift (~> 4.0)
-  - ReSwift (4.0.1)
-  - ReSwiftConsumer (0.6.1):
+  - ReSwift (4.1.1)
+  - ReSwiftConsumer (0.7.0):
     - ReSwift
-  - RxAtomic (4.4.0)
-  - RxCocoa (4.4.0):
-    - RxSwift (~> 4.0)
-  - RxSwift (4.4.0):
-    - RxAtomic (~> 4.4)
+  - RxAtomic (4.4.2)
+  - RxCocoa (4.4.2):
+    - RxSwift (>= 4.4.2, ~> 4.4)
+  - RxSwift (4.4.2):
+    - RxAtomic (>= 4.4.2, ~> 4.4)
 
 DEPENDENCIES:
   - QuickIosComponent (from `../`)
@@ -30,11 +30,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   QuickIosComponent: 860e4ebcd32462abcad4b81bc1341e40b06a5e8f
-  ReSwift: f4012c613e13da7398827fe5aebdb938eaed40a3
-  ReSwiftConsumer: 61192aa853d0d6797854c4bd4b5f826ae0a4e9a6
-  RxAtomic: eacf60db868c96bfd63320e28619fe29c179656f
-  RxCocoa: df63ebf7b9a70d6b4eeea407ed5dd4efc8979749
-  RxSwift: 5976ecd04fc2fefd648827c23de5e11157faa973
+  ReSwift: d925be0033558f55bd73d92869961230dfe19d52
+  ReSwiftConsumer: b2deabd6f78eac1bae228fa26b3ac290f261e616
+  RxAtomic: d00e97c10db88c6f08540e0bf2752fc5a2404167
+  RxCocoa: 477990dc3b4c3ff55fb0ac77e1cc06244e0aaec8
+  RxSwift: 74c29b693c8e42b0f64400e8b06564575742d649
 
 PODFILE CHECKSUM: 05a0ba4a4ab8560bd29ba499101d365c4f7963f1
 

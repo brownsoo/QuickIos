@@ -16,13 +16,13 @@ public enum RequestResult<T> {
 }
 
 public extension RequestResult {
-    public func map<U>(f: (T)->U) -> RequestResult<U> {
+    func map<U>(f: (T)->U) -> RequestResult<U> {
         switch self {
         case .Success(let t): return .Success(f(t))
         case .Failure(let err): return .Failure(err)
         }
     }
-    public func flatMap<U>(f: (T)->RequestResult<U>) -> RequestResult<U> {
+    func flatMap<U>(f: (T)->RequestResult<U>) -> RequestResult<U> {
         switch self {
         case .Success(let t): return f(t)
         case .Failure(let err): return .Failure(err)
@@ -30,7 +30,7 @@ public extension RequestResult {
     }
     // Return the value if it's a .Success
     // or throw the error if it's a .Failure
-    public func resolve() throws -> T {
+    func resolve() throws -> T {
         switch self {
         case RequestResult.Success(let value): return value
         case RequestResult.Failure(let error): throw error
@@ -38,7 +38,7 @@ public extension RequestResult {
     }
     // Construct a .Success if the expression returns a value
     // or a .Failure if it throws
-    public init(_ throwable: () throws -> T) {
+    init(_ throwable: () throws -> T) {
         do {
             let value = try throwable()
             self = RequestResult.Success(value)

@@ -22,7 +22,7 @@ public protocol AlertPop {
 }
 
 public extension AlertPop {
-    public func alertPop(_ parent: UIViewController,
+    func alertPop(_ parent: UIViewController,
                          title: String?,
                          message: String,
                          positive: String? = nil,

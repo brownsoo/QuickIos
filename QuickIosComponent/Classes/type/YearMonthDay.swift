@@ -78,7 +78,7 @@ public struct YearMonthDay: Equatable {
 
 public extension YearMonthDay {
     /// init with yyyy-MM-dd
-    public init?(yyyyMMdd: String) {
+    init?(yyyyMMdd: String) {
         let format = DateFormatter()
         format.locale = TimeUtil.currentLocale
         format.dateFormat = "yyyy-MM-dd"
@@ -95,16 +95,16 @@ public extension YearMonthDay {
         }
     }
     /// init with now date
-    public init() {
+    init() {
         self.init(TimeUtil.now)
     }
     
-    public init(y: Int, m: Int, d: Int) {
+    init(y: Int, m: Int, d: Int) {
         self = YearMonthDay(year: y, month: m, day: d)
     }
     
     /// init with date
-    public init(_ date: Date, calendar: Calendar = TimeUtil.calendar) {
+    init(_ date: Date, calendar: Calendar = TimeUtil.calendar) {
         let set: Set<Calendar.Component> = [.year, .month, .day]
         let comps = calendar.dateComponents(set, from: date)
         self = YearMonthDay(
