@@ -16,12 +16,6 @@ public extension Also {
     }
 }
 
-public extension Also where Self : UIView {
-}
-
-public extension Also where Self : UIButton {
-}
-
 public extension Also where Self : AnyObject { }
 
 
