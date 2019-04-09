@@ -262,7 +262,7 @@ public extension UIViewController {
     @objc
     func dismissEasy(animated: Bool = true) {
         DispatchQueue.main.async {
-            if let nc = self.navigationController {
+            if let nc = self.navigationController, !self.isBeingPresented {
                 nc.popViewController(animated: animated)
             } else {
                 self.dismiss(animated: animated, completion: nil)
