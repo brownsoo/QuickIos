@@ -15,14 +15,14 @@ public protocol RequestStatusNotable {
 public protocol QuickRequest: Cancelable, RequestStatusNotable {
 
     associatedtype ResultType
-    associatedtype QuickRequestSubclass
+    //associatedtype QuickRequestSubclass
 
     var urlString: String { get }
     var token: String? { get }
     @discardableResult
-    func addHeader(_ key: String, _ value: String) -> QuickRequestSubclass
+    func addHeader(_ key: String, _ value: String) -> Self
     @discardableResult
-    func setTokenRequired() -> QuickRequestSubclass
+    func setTokenRequired() -> Self
     func call(resultHandler: @escaping (RequestResult<ResultType>) -> Void)
 }
 
@@ -33,10 +33,29 @@ public struct NullDataError: Error {
     }
 }
 
+open class QuickRequestCenter {
+
+    private let queue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
+
+    public static let `default` = QuickRequestCenter()
+
+    open func add(_ request: Operation) {
+        queue.addOperation(request)
+    }
+
+    open func cancelAll() {
+        queue.cancelAllOperations()
+    }
+}
+
 
 /// Request 일부 구현한 Abstract 클래스
 /// 실제 요청을 수행하지 않음
-open class QuickRequestBase<T> : QuickRequest {
+open class QuickRequestBase<T> : Operation, QuickRequest {
     
     public typealias ResultType = T
     public typealias RequestBeforeAction = () -> Void
@@ -44,18 +63,40 @@ open class QuickRequestBase<T> : QuickRequest {
     public typealias RequestFailAction = (_ error: Error) -> Void
     public typealias RequestCompletion = (_ result: T?, _ response: URLResponse?, _ error: Error?) -> Void
     
-    open var isCalled: Bool { return called }
-    open var isCancelled: Bool { return cancelled }
-    open var isCompleted: Bool { return completed }
+    open var isCalled: Bool { return _called }
+    open var isCompleted: Bool { return _finished }
     public private(set) var urlString: String
     public private(set) var token: String? = nil
     public private(set) var isTokenRequired: Bool = false
     public lazy var headers = [String : String]()
-    
-    open var cancelled = false
-    open var called = false
-    open var completed = false
-    
+
+    private var _called = false
+
+    private var _executing = false
+    open override var isExecuting: Bool {
+        get {
+            return self._executing
+        }
+        set {
+            self.willChangeValue(forKey: "isExecuting")
+            self._executing = newValue
+            self.didChangeValue(forKey: "isExecuting")
+        }
+    }
+
+    private var _finished = false
+    override open var isFinished: Bool {
+        get {
+            return self._finished
+        }
+        set {
+            self.willChangeValue(forKey: "isFinished")
+            self._finished = newValue
+            self.didChangeValue(forKey: "isFinished")
+        }
+    }
+
+
     private var beforeActions = [RequestBeforeAction]()
     private var successActions = [RequestSuccessAction]()
     private var failActions = [RequestFailAction]()
@@ -65,13 +106,13 @@ open class QuickRequestBase<T> : QuickRequest {
     }
     
     @discardableResult
-    open func setTokenRequired() -> QuickRequestBase<T> {
+    open func setTokenRequired() -> Self {
         self.isTokenRequired = true
         return self
     }
     
     @discardableResult
-    open func addHeader(_ key: String, _ value: String) -> QuickRequestBase<T> {
+    open func addHeader(_ key: String, _ value: String) -> Self {
         headers[key] = value
         return self
     }
@@ -112,19 +153,53 @@ open class QuickRequestBase<T> : QuickRequest {
             action(error)
         }
     }
+
+    open override func cancel() {
+        super.cancel()
+        self.finish()
+    }
+
+    func finish() {
+        self.isExecuting = false
+        self.isFinished = true
+    }
+
+    var resultHandler: ((RequestResult<T>) -> Void)?
+
     /// 요청을 실행한다.
     public func call(resultHandler: @escaping (RequestResult<T>) -> Void) {
-        called = true
+        _called = true
+        self.resultHandler = resultHandler
+        QuickRequestCenter.default.add(self)
+    }
+    /// BaseRequest 를 구현한 레이어를 실행한다.
+    open func executeCall(_ completion: @escaping RequestCompletion) {
+        preconditionFailure("구현해야 하는 부분")
+    }
+
+    // MARK: Operation Subclassing
+    open override func start() {
+        let isRunnable = !self.isFinished && !self.isCancelled && !self.isExecuting
+        guard isRunnable else { return }
+        guard !Thread.isMainThread else {
+            DispatchQueue.global(qos: .utility).async { [weak self] in
+                self?.start()
+            }
+            return
+        }
+        main()
+    }
+
+    open override func main() {
+        self.isExecuting = true
+        defer {
+            self.finish()
+        }
         DispatchQueue.main.async {
             self.notifyBeforeAction()
         }
-        defer {
-            completed = true
-        }
-        
-        executeCall { [weak self] data, response, error in
-            self?.completed = true
-            // print("===== executeCalled \(self?.urlString)")
+
+        self.executeCall { [weak self] data, response, error in
             DispatchQueue.main.async {
                 // notify action handlers
                 if let error = error {
@@ -134,22 +209,14 @@ open class QuickRequestBase<T> : QuickRequest {
                 } else {
                     self?.notifySuccessAction(data!)
                 }
-                
-                resultHandler(RequestResult<T> {
+
+                self?.resultHandler?(RequestResult<T> {
                     if let error = error { throw error }
                     guard let data = data else { throw NullDataError(response) }
                     return data
                 })
             }
         }
-    }
-    /// BaseRequest 를 구현한 레이어를 실행한다.
-    open func executeCall(_ completion: @escaping RequestCompletion) {
-        preconditionFailure("구현해야 하는 부분")
-    }
-    
-    open func cancel() {
-        cancelled = true
     }
 }
 
