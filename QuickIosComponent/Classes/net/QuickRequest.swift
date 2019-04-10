@@ -14,7 +14,7 @@ public protocol RequestStatusNotable {
 
 public protocol QuickRequest: Cancelable, RequestStatusNotable {
 
-    associatedtype ResultType
+    //associatedtype ResultType
     //associatedtype QuickRequestSubclass
 
     var urlString: String { get }
@@ -23,7 +23,7 @@ public protocol QuickRequest: Cancelable, RequestStatusNotable {
     func addHeader(_ key: String, _ value: String) -> Self
     @discardableResult
     func setTokenRequired() -> Self
-    func call(resultHandler: @escaping (RequestResult<ResultType>) -> Void)
+    //func call(resultHandler: @escaping (RequestResult<ResultType>) -> Void)
 }
 
 public struct NullDataError: Error {
@@ -37,7 +37,7 @@ open class QuickRequestCenter {
 
     private let queue: OperationQueue = {
         let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 1
+        queue.maxConcurrentOperationCount = 2
         return queue
     }()
 
@@ -57,7 +57,7 @@ open class QuickRequestCenter {
 /// 실제 요청을 수행하지 않음
 open class QuickRequestBase<T> : Operation, QuickRequest {
     
-    public typealias ResultType = T
+    //public typealias ResultType = T
     public typealias RequestBeforeAction = () -> Void
     public typealias RequestSuccessAction = (_ result: T) -> Void
     public typealias RequestFailAction = (_ error: Error) -> Void
@@ -96,6 +96,9 @@ open class QuickRequestBase<T> : Operation, QuickRequest {
         }
     }
 
+    open override var isConcurrent: Bool {
+        return true
+    }
 
     private var beforeActions = [RequestBeforeAction]()
     private var successActions = [RequestSuccessAction]()
@@ -178,6 +181,7 @@ open class QuickRequestBase<T> : Operation, QuickRequest {
     }
 
     // MARK: Operation Subclassing
+
     open override func start() {
         let isRunnable = !self.isFinished && !self.isCancelled && !self.isExecuting
         guard isRunnable else { return }
@@ -191,26 +195,28 @@ open class QuickRequestBase<T> : Operation, QuickRequest {
     }
 
     open override func main() {
-        self.isExecuting = true
-        defer {
-            self.finish()
-        }
+        isExecuting = true
         DispatchQueue.main.async {
             self.notifyBeforeAction()
         }
-
-        self.executeCall { [weak self] data, response, error in
+        executeCall { data, response, error in
+            if self.isCancelled == true {
+                return
+            }
             DispatchQueue.main.async {
+
+                self.finish()
+
                 // notify action handlers
                 if let error = error {
-                    self?.notifyFailAction(error)
+                    self.notifyFailAction(error)
                 } else if data == nil {
-                    self?.notifyFailAction(NullDataError(response))
+                    self.notifyFailAction(NullDataError(response))
                 } else {
-                    self?.notifySuccessAction(data!)
+                    self.notifySuccessAction(data!)
                 }
 
-                self?.resultHandler?(RequestResult<T> {
+                self.resultHandler?(RequestResult<T> {
                     if let error = error { throw error }
                     guard let data = data else { throw NullDataError(response) }
                     return data
