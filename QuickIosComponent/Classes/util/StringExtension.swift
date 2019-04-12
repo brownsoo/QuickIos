@@ -24,6 +24,7 @@ public extension String {
                                   attributes: [NSAttributedString.Key.strikethroughStyle: style.rawValue,
                                                NSAttributedString.Key.strikethroughColor: color])
     }
+
     func underline(style: NSUnderlineStyle = .single, color: UIColor? =  nil) -> NSMutableAttributedString {
         var attrs: [NSAttributedString.Key: Any] = [NSAttributedString.Key.underlineStyle: style.rawValue]
         if color != nil {
@@ -75,6 +76,18 @@ public extension NSMutableAttributedString {
             range:NSRange(location: 0, length: self.length))
         if color != nil {
             addAttribute(NSAttributedString.Key.underlineColor, value:color!,
+                range:NSRange(location: 0, length: self.length))
+        }
+        return self
+    }
+
+    @discardableResult
+    func strike(style: NSUnderlineStyle = NSUnderlineStyle.single,
+                color: UIColor? = nil) -> NSMutableAttributedString {
+        addAttribute(NSAttributedString.Key.strikethroughStyle, value: style.rawValue,
+            range:NSRange(location: 0, length: self.length))
+        if color != nil {
+            addAttribute(NSAttributedString.Key.strikethroughColor, value:color!,
                 range:NSRange(location: 0, length: self.length))
         }
         return self

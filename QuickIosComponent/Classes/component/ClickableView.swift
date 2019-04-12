@@ -12,6 +12,7 @@ open class ClickableView: JustView {
     }
 
     public var isClickable: Bool = true
+    public var isTouchEffect: Bool = true
     private var clicked = false
     private var rxBag = DisposeBag()
 
@@ -83,15 +84,19 @@ open class ClickableView: JustView {
 
     private func touchEffect() {
         clicked = true
-        DispatchQueue.main.async { [weak self] in
-            self?.backgroundColor = UIColor.blue.alpha(0.05)
+        if isTouchEffect {
+            DispatchQueue.main.async { [weak self] in
+                self?.backgroundColor = UIColor.blue.alpha(0.05)
+            }
         }
     }
 
     private func clearTouchEffect() {
         clicked = false
-        DispatchQueue.main.async { [weak self] in
-            self?.backgroundColor = UIColor.clear
+        if isTouchEffect {
+            DispatchQueue.main.async { [weak self] in
+                self?.backgroundColor = UIColor.clear
+            }
         }
     }
 }
