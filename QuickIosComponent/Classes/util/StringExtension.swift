@@ -128,7 +128,7 @@ public extension NSMutableAttributedString {
 
 public extension String {
     var isNotEmpty: Bool {
-        return !isEmpty
+        return !self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 }
 
