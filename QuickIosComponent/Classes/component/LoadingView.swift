@@ -27,6 +27,12 @@ public class LoadingView: UIView {
             }
         }
     }
+
+    var text: String? = nil {
+        didSet {
+            label.text = text
+        }
+    }
     
     public override var intrinsicContentSize: CGSize {
         return CGSize(width: 300, height: 400)

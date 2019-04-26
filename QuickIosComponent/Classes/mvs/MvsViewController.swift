@@ -13,7 +13,7 @@ import ReSwiftConsumer
 import RxSwift
 
 open class MvsViewController<S: StateType & Equatable, I: RePageInteractor<S>>
-    : StateViewController<S>, LoadingIndicatable, IntentContainer {
+    : StateViewController<S>, LoadingVisible, IntentContainer {
 
     private(set) var isFirstLayout = true
 

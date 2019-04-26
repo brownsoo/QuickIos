@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 
 open class BaseViewController: UIViewController,
-    LoadingIndicatable, ForegroundNotable, IntentContainer {
+    LoadingVisible, ForegroundNotable, IntentContainer {
 
     public lazy var loadingView = LoadingView()
 

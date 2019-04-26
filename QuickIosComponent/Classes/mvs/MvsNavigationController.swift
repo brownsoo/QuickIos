@@ -62,11 +62,11 @@ open class MvsNavigationController<S, I: RePageInteractor<S>>: StateNavigationCo
         guard let child = children.last else {
             return
         }
-        (child as? LoadingIndicatable)?.showLoading(child.view)
+        (child as? LoadingVisible)?.showLoading(child.view)
     }
     
     open func hideLoading() {
-        if let child = children.last as? LoadingIndicatable {
+        if let child = children.last as? LoadingVisible {
             child.hideLoading()
         }
     }

@@ -13,7 +13,7 @@ import UIKit
 
 open class MvsSharedViewController<SharedState: StateType & Equatable, I: RePageInteractor<SharedState>>
     : StateSharedViewController<SharedState>,
-    LoadingIndicatable, IntentContainer {
+    LoadingVisible, IntentContainer {
 
     private(set) var isFirstLayout = true
 
