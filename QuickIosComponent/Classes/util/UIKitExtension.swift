@@ -236,6 +236,19 @@ public extension UIImage {
         }
         return result
     }
+
+    @discardableResult
+    func resize(newHeight: CGFloat) -> UIImage {
+        let scale = newHeight / self.size.height
+        let newWidth = self.size.width * scale
+        let newSize = CGSize(width: newWidth, height: newHeight)
+        let newRect = CGRect(origin: CGPoint(), size: newSize)
+        let renderer = UIGraphicsImageRenderer(size: newSize)
+        let result = renderer.image { c in
+            self.draw(in: newRect)
+        }
+        return result
+    }
 }
 
 public extension UIViewController {
