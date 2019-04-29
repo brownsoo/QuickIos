@@ -41,7 +41,7 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: RePage
         super.viewWillDisappear(animated)
         sharedInteractor?.removeSharedConsumer(pageConsumer)
         unbindUIEvents()
-        pageConsumer.removeAll()
+        unbindConsumers()
     }
 
     deinit {
@@ -73,6 +73,12 @@ open class MvsSharedViewController<SharedState: StateType & Equatable, I: RePage
     /// bind Consumers
     /// called in viewWillAppear
     open func bindConsumers() {
+    }
+    
+    /// bind Consumers
+    /// called in viewWillDisappear
+    open func unbindConsumers() {
+        pageConsumer.removeAll()
     }
 }
 

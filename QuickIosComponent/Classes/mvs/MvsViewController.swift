@@ -45,6 +45,7 @@ open class MvsViewController<S: StateType & Equatable, I: RePageInteractor<S>>
         super.viewWillDisappear(animated)
         (pageInteractor as? ViewAttach)?.detachView()
         unbindUIEvents()
+        unbindConsumers()
     }
     
     override open func viewDidLayoutSubviews() {
@@ -67,6 +68,12 @@ open class MvsViewController<S: StateType & Equatable, I: RePageInteractor<S>>
     /// bind Consumers
     /// called in viewWillAppear
     open func bindConsumers() {}
+    
+    /// bind Consumers
+    /// called in viewWillDisappear
+    open func unbindConsumers() {
+        pageConsumer?.removeAll()
+    }
 }
 
 extension MvsViewController: AlertPop {
