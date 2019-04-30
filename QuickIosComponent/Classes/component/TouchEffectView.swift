@@ -1,10 +1,10 @@
 //
-//  ClickableView.swift
+//  TouchEffectView.swift
 //
 
 import RxSwift
 
-open class ClickableView: JustView {
+open class TouchEffectView: JustView {
 
     private let clickPublish = PublishSubject<Any>()
     public var clicks: Observable<Any> {
@@ -16,9 +16,22 @@ open class ClickableView: JustView {
     private var clicked = false
     private var rxBag = DisposeBag()
 
+    public lazy var effectLayer: CAShapeLayer = {
+        let effect = CAShapeLayer()
+        effect.fillColor = nil
+        return effect
+    }()
+
+    public var highlightColor: UIColor = UIColor.blue.withAlphaComponent(0.05) {
+        didSet {
+            effectLayer.fillColor = self.highlightColor.cgColor
+        }
+    }
+
     open override func onInit() {
         super.onInit()
         addTapGesture()
+        layer.insertSublayer(effectLayer, at: 0)
     }
 
     private func addTapGesture(){
@@ -82,11 +95,19 @@ open class ClickableView: JustView {
         }
     }
 
+    open override func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
+        effectLayer.frame = self.bounds
+        effectLayer.path = UIBezierPath(roundedRect: self.bounds, cornerRadius: 0).cgPath
+
+    }
+
     private func touchEffect() {
         clicked = true
         if isTouchEffect {
+            let color = self.highlightColor.cgColor
             DispatchQueue.main.async { [weak self] in
-                self?.backgroundColor = UIColor.blue.alpha(0.05)
+                self?.effectLayer.fillColor = color
             }
         }
     }
@@ -95,7 +116,7 @@ open class ClickableView: JustView {
         clicked = false
         if isTouchEffect {
             DispatchQueue.main.async { [weak self] in
-                self?.backgroundColor = UIColor.clear
+                self?.effectLayer.fillColor = nil
             }
         }
     }
