@@ -158,8 +158,8 @@ open class QuickRequestBase<T> : Operation, QuickRequest {
     }
 
     open override func cancel() {
-        super.cancel()
         self.finish()
+        super.cancel()
     }
 
     func finish() {
