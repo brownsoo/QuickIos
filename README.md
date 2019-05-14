@@ -1,13 +1,5 @@
 
-# NOW Developing. Don't trust!!
-
-# QuickIosComponent
-
-[![Build Status](https://travis-ci.com/brownsoo/QuickIosComponent.svg?branch=master)](https://travis-ci.com/brownsoo/QuickIosComponent)
-[![Version](https://img.shields.io/cocoapods/v/QuickIosComponent.svg?style=flat)](https://cocoapods.org/pods/QuickIosComponent)
-[![License](https://img.shields.io/cocoapods/l/QuickIosComponent.svg?style=flat)](https://cocoapods.org/pods/QuickIosComponent)
-[![Platform](https://img.shields.io/cocoapods/p/QuickIosComponent.svg?style=flat)](https://cocoapods.org/pods/QuickIosComponent)
-[![codebeat badge](https://codebeat.co/badges/13b9c46a-79ad-433e-96d8-03ee33c14368)](https://codebeat.co/projects/github-com-brownsoo-quickioscomponent-master)
+# NOW DEPRECATED. Don't trust!!
 
 This Library is just Quick iOS development for me.
 
